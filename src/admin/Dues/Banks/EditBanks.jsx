@@ -4,7 +4,7 @@ import usePostHook from "../../../hook/usePost";
 import { toast } from "react-toastify";
 
 const EditBanksModal = ({ item, close, refetch }) => {
-    const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [accName, setAccName] = useState(item?.account_name || "");
   const [accNo, setAccNo] = useState(item?.account_number || "");
   const [bankName, setBankName] = useState(item?.bank_name || "");
@@ -21,7 +21,7 @@ const EditBanksModal = ({ item, close, refetch }) => {
     fd.append("account_name", accName);
     fd.append("account_number", accNo);
     fd.append("bank_name", bankName);
-    fd.append('bank_id', item.id)
+    fd.append("bank_id", item.id);
     handlePost(`admin/bank/update`, fd, `multipart/form-data`, onSuccess);
   };
   return (
@@ -57,7 +57,7 @@ const EditBanksModal = ({ item, close, refetch }) => {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="w-full py-3 bg-[#291670] font-semibold text-lg rounded text-white"
+          className="w-full py-3 bg-[#015907] font-semibold text-lg rounded text-white"
         >
           {loading ? `Submiting...` : `Submit`}
         </button>

@@ -10,7 +10,7 @@
 }
 
 .side_img {
-  border-bottom: 1px solid #291670;
+  border-bottom: 1px solid #015907;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +23,7 @@
 }
 
 .img-side {
-  border-bottom: 1px solid #291670;
+  border-bottom: 1px solid #015907;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,14 +72,14 @@
 }
 
 .nav-link:hover {
-  background-color: #29167038;
-  color: #291670;
+  background-color: #01590738;
+  color: #015907;
   padding: 0.7rem 1rem 0.7rem 1rem;
 }
 
 .nav-link .active {
-  background-color: #29167038;
-  color: #291670;
+  background-color: #01590738;
+  color: #015907;
 }
 
 .nav-icon {
@@ -90,12 +90,12 @@
 }
 
 .nav-item:not(:last-child) .active {
-  background-color: #29167038;
-  color: #291670;
+  background-color: #01590738;
+  color: #015907;
 }
 /* .submenu-item .active{
-    background-color: #29167038 ;
-    color: #291670;
+    background-color: #01590738 ;
+    color: #015907;
   } */
 .submenu {
   padding-left: 3rem;
@@ -200,7 +200,7 @@
   font-size: 1.6rem;
 }
 
-.bell> span {
+.bell > span {
   position: absolute;
   top: -10px;
   right: -10px;
@@ -217,42 +217,41 @@
   border-radius: 50%;
 }
 
-.bell_drop{
+.bell_drop {
   position: absolute;
   left: -25rem;
   width: 30rem;
   background: white;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 }
-.bell_drop > div{
+.bell_drop > div {
   border-bottom: 1px solid #cecdcd;
 }
-.bell_drop h3{
+.bell_drop h3 {
   font-size: 1rem;
   font-weight: normal;
 }
 
-.bell_body{
+.bell_body {
   padding: 1rem 1.5rem;
   display: flex;
   gap: 1rem;
 }
-.no_body{
+.no_body {
   padding: 1rem 2rem;
- 
 }
-.bell_body svg{
+.bell_body svg {
   font-size: 2rem;
 }
 
-.bell_body p{
+.bell_body p {
   align-self: flex-end;
   display: flex;
   font-size: 0.85rem;
-  color: #291670;
+  color: #015907;
 }
 
-.bell_drop a{
+.bell_drop a {
   font-weight: 600;
 
   padding: 1.3rem 2rem;
@@ -261,14 +260,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-
 }
-
-
-
-
-
-
 
 @media screen and (max-width: 750px) {
   .search input {

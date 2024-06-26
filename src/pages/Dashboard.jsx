@@ -11,9 +11,11 @@ import MembersAnnoucement from "./users/Annoucement";
 import MembersTransactions from "./users/Transactions";
 import MembersSetting from "./users/Setting";
 import MembersDues from "./users/Dues";
+import Members from "../users/members/Members";
+
 
 const Dashboard = () => {
-  const sub = localStorage.getItem("bripan_sub");
+  const sub = localStorage.getItem("igbo_sub");
   const [subModal, setSubModal] = useState(false);
 
   const [showSidebar, setShowSidebar] = useState(window.innerWidth >= 650);
@@ -24,11 +26,11 @@ const Dashboard = () => {
 
   const { data, isLoading } = useGetHook("member/count/unread/notifications");
   
-  useEffect(() => {
-    if (sub === "0") {
-      setSubModal(true);
-    }
-  }, [sub]);
+  // useEffect(() => {
+  //   if (sub === "0") {
+  //     setSubModal(true);
+  //   }
+  // }, [sub]);
 
   return (
     <div className="layout">
@@ -53,6 +55,8 @@ const Dashboard = () => {
             <Route path="transact" element={<MembersTransactions />} />
             <Route path="settings" element={<MembersSetting />} />
             <Route path="dues" element={<MembersDues />} />
+            <Route path="members" element={<Members />} />
+
           </Routes>
         </div>
       </div>

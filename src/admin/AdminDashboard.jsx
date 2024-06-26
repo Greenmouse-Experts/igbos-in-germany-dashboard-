@@ -5,7 +5,7 @@ import { Topnav } from "./Topnav";
 import { Route, Routes } from "react-router-dom";
 import "../stylesheet/layout.css";
 import Admin from "./Admin";
-import Fellow from "../pages/admin/Fellow";
+import Member from "../pages/admin/Member";
 import Associate from "../pages/admin/Associate";
 import Notify from "../pages/admin/Notify";
 import AdminAnnouncement from "../pages/admin/Announcement";
@@ -15,6 +15,8 @@ import AdminDues from "../pages/admin/Dues/Dues";
 import DuesPayments from "../pages/admin/Payments/Dues";
 import SubscriptionPayments from "../pages/admin/Payments/Subscription";
 import SettingsPage from "../pages/admin/Settings";
+import AdminSubBank from "../pages/admin/Subscription/Banks";
+import SubList from "../pages/admin/Subscription/SubList";
 
 const AdminDashboard = () => {
   const [showSidebar, setShowSidebar] = useState(window.innerWidth >= 650);
@@ -43,10 +45,12 @@ const AdminDashboard = () => {
         <div className="pages">
           <Routes>
             <Route path="/" element={<Admin />} />
-            <Route path="fellow" element={<Fellow />} />
-            <Route path="associate" element={<Associate />} />
+            <Route path="member" element={<Member />} />
+            {/* <Route path="associate" element={<Associate />} /> */}
             <Route path="announcements" element={<AdminAnnouncement />} />
             <Route path="notify" element={<Notify datas={data?.data} />} />
+            <Route path="subscription/bank" element={<AdminSubBank/>} />
+            <Route path="subscription/list" element={<SubList/>} />
             <Route path="dues/list" element={<AdminDues/>} />
             <Route path="dues/bank" element={<AdminBanks/>} />
             <Route path="dues/category" element={<AdminDuesCategory/>} />

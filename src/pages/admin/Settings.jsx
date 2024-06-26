@@ -88,11 +88,11 @@ const SettingsPage = () => {
                   />
                 </p>
               </div>
-              <div className="">
+              {/* <div className="">
                 <p className="fw-600 mt-1 text-center">{`${
                   user?.data?.first_name ? user?.data?.first_name : ""
                 } ${user?.data?.last_name ? user?.data?.last_name : ""}`}</p>
-              </div>
+              </div> */}
             </div>
             <div className="col-span-3 mt-9 lg:pl-6">
               <div className="grid gap-6">

@@ -3,10 +3,11 @@ import { NavLink } from "react-router-dom";
 import logo from "../image/logo.png";
 import { FiUsers, FiSettings, FiLogOut } from "react-icons/fi";
 import {
-  MdOutlineManageAccounts,
   MdAccessTime,
   MdOutlinePayment,
 } from "react-icons/md";
+import { GrTransaction } from "react-icons/gr";
+
 // import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { LuLayoutDashboard } from "react-icons/lu";
 import "../stylesheet/component.css";
@@ -72,7 +73,7 @@ const Sidebar = ({ showSidebar, toggleSidebar }) => {
       className={showSidebar ? "sidebar" : "sidebar closed"}
     >
       <div className={showSidebar ? "side_img" : "img-side"}>
-      <a href="https://bripan.org.ng/"><img className="img-logo" src={logo} alt="Logo" /></a>{" "}
+      <a href="https://ndiigbogermany.org"><img className="img-logo" src={logo} alt="Logo" /></a>{" "}
         <div className="men" onClick={toggleSidebar}>
           <AiOutlineClose />
         </div>
@@ -83,6 +84,14 @@ const Sidebar = ({ showSidebar, toggleSidebar }) => {
             <NavLink to="/dashboard/" className="nav-link">
               <span className="nav-icon">
                 <LuLayoutDashboard /> {showSidebar && "Dashboard"}
+              </span>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="members" className="nav-link">
+              <span className="nav-icon">
+              <FiUsers />
+                {showSidebar && "Members"}
               </span>
             </NavLink>
           </li>
@@ -105,7 +114,7 @@ const Sidebar = ({ showSidebar, toggleSidebar }) => {
           <li className="nav-item">
             <NavLink to="transact" className="nav-link">
               <span className="nav-icon">
-                <FiUsers />
+              <GrTransaction />
                 {showSidebar && "Transaction"}
               </span>
             </NavLink>

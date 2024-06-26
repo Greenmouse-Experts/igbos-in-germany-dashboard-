@@ -29,17 +29,17 @@ const MembersDues = () => {
   }, [due]);
 
   // paystack
-  const email = localStorage.getItem("bripan_email");
+  const email = localStorage.getItem("igbo_email");
 
   const { handlePost } = usePostHook();
   const mySuccess = () => {
     refetch();
     toast.success("Payment successfully");
-    localStorage.removeItem("bripan_id");
+    localStorage.removeItem("igbo_id");
   };
   const verifyPayment = (reference) => {
     const fd = new FormData();
-    fd.append("due_id", localStorage.getItem("bripan_id"));
+    fd.append("due_id", localStorage.getItem("igbo_id"));
     fd.append("ref_id", reference);
     handlePost(`member/payment/callback`, fd, `multipart/form-data`, mySuccess);
   }
@@ -166,7 +166,7 @@ const MembersDues = () => {
                             <p>{item.category.bank.account_number}</p>
                           </td>
                           <td className="align-middle text-[14px] whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                            <div onClick={() => localStorage.setItem("bripan_id", item.id)}>
+                            <div onClick={() => localStorage.setItem("igbo_id", item.id)}>
                               <PaystackHookButton item={item} />
                             </div>
                             <p

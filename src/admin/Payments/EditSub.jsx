@@ -3,7 +3,7 @@ import { useState } from "react";
 import usePostHook from "../../hook/usePost";
 import { toast } from "react-toastify";
 
-const EditSubscription = ({item, refetch, close}) => {
+const EditSubscription = ({ item, refetch, close }) => {
   const [loading, setLoading] = useState(false);
   console.log(item.item);
   const [amt, setAmt] = useState(Number(item.amount));
@@ -19,12 +19,7 @@ const EditSubscription = ({item, refetch, close}) => {
     const fd = new FormData();
     fd.append("subscription_id", item.id);
     fd.append("amount", amt);
-    handlePost(
-      `admin/subscription`,
-      fd,
-      `multipart/form-data`,
-      onSuccess
-    );
+    handlePost(`admin/subscription`, fd, `multipart/form-data`, onSuccess);
   };
   return (
     <>
@@ -42,7 +37,7 @@ const EditSubscription = ({item, refetch, close}) => {
           <button
             type="submit"
             onClick={handleSubmit}
-            className="w-full py-3 bg-[#291670] font-semibold text-lg rounded text-white"
+            className="w-full py-3 bg-[#015907] font-semibold text-lg rounded text-white"
           >
             {loading ? `Updating...` : `Update`}
           </button>

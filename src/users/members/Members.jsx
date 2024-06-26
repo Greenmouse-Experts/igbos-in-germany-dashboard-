@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { BiSearch, BiPlus } from "react-icons/bi";
 import dayjs from "dayjs";
 import { ThreeCircles } from "react-loader-spinner";
-import AddFellow from "../../admin/AddFellow";
 import useGetHook from "../../hook/useGet";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -11,16 +10,20 @@ import useModal from "../../hook/useModal";
 import ReusableModal from "../../components/ReusableModal";
 import axios from "axios";
 import { toast } from "react-toastify";
-import MemberModal from "../../admin/members/memberModal";
 
-const Fellow = () => {
+import AddMembers from "./AddMembers";
+import MemberModal from "./memberModal";
+
+const Members = () => {
   const {
     data,
     isLoading: loading,
     refetch,
-  } = useGetHook("admin/member/retrieve/all?keyword=fellow");
-  const [showDetails, setShowDetails] = useState(false)
+  } = useGetHook("member/retrieve/all/member");
+  const [showDetails, setShowDetails] = useState(false);
   const [showAddMemberPopup, setShowAddMemberPopup] = useState(false);
+
+  console.log(data, "members");
 
   const handleAddMemberClick = () => {
     setShowAddMemberPopup(true);
@@ -45,14 +48,14 @@ const Fellow = () => {
         ],
       ],
       body: data?.data?.data.map((item, index) => [
-          index + 1,
-          item.membership_id,
-          `${item.first_name} ${item.last_name}`,
-          item.email,
-          item.state,
-          dayjs(item.created_at).format("DD-MMM -YYYY"),
-          item.status,
-        ]),
+        index + 1,
+        item.membership_id,
+        `${item.first_name} ${item.last_name}`,
+        item.email,
+        item.state,
+        dayjs(item.created_at).format("DD-MMM -YYYY"),
+        item.status,
+      ]),
     });
 
     doc.save("members.pdf");
@@ -64,10 +67,10 @@ const Fellow = () => {
   const { Modal: Activate, setShowModal: ShowActivate } = useModal();
   const { Modal: Deactivate, setShowModal: ShowDeactivate } = useModal();
   useEffect(() => {
-    if(data){
-      setItems(data?.data.data)
+    if (data) {
+      setItems(data?.data.data);
     }
-  }, [data])
+  }, [data]);
   const openActivate = (item) => {
     setSelected(item);
     ShowActivate(true);
@@ -79,18 +82,20 @@ const Fellow = () => {
   const openDetails = (item) => {
     setSelected(item);
     setShowDetails(true);
-  }
+  };
   // change account status
   const ChangeAccountStatus = async (status) => {
+    const token = localStorage.getItem("igbo_token");
+
     try {
       const config = {
         headers: {
           "Content-Type": "Application/json",
-          authorization: `Bearer ${localStorage.getItem("bripan_token")}`,
+          Authorization: `Bearer ${token}`,
         },
       };
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/admin/member/${status}?user_id=${selected.id}`,
+        `https://api.ndiigbogermany.org/api/member/view/member?member_id=${selected.id}`,
         config
       );
       const data = res.data;
@@ -105,19 +110,21 @@ const Fellow = () => {
   };
   // handle search
   const handleSearch = (e) => {
-    if(e.target.value === ""){
-      setItems(data.data.data)
-    }else{
-      const filtered = data.data.data.filter((item) => item.first_name.toLowerCase().includes(e.target.value.toLowerCase()))
-      setItems(filtered)
+    if (e.target.value === "") {
+      setItems(data.data.data);
+    } else {
+      const filtered = data.data.data.filter((item) =>
+        item.first_name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setItems(filtered);
     }
-  }
+  };
   return (
     <div className="px-5">
       <div className="p-6 bg-white">
         <div className="admin_head">
           <div className="leftt">
-            <h3 className="text-2xl font-semibold">Fellow Members</h3>
+            <h3 className="text-2xl font-semibold">Members</h3>
             <svg
               onClick={downloadAsPDF}
               xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +152,11 @@ const Fellow = () => {
               <BiPlus /> Add New
             </button>
             <div className="searchh">
-              <input type="text" placeholder="Search by name" onChange={handleSearch}/>
+              <input
+                type="text"
+                placeholder="Search by name"
+                onChange={handleSearch}
+              />
               <span>
                 <BiSearch />
               </span>
@@ -157,7 +168,7 @@ const Fellow = () => {
             <ThreeCircles
               height="100"
               width="100"
-              color="#291670"
+              color="#015907"
               wrapperStyle={{}}
               wrapperClass=""
               visible={true}
@@ -185,7 +196,7 @@ const Fellow = () => {
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
                       >
-                        Member ID
+                      Image
                       </th>
                       <th
                         scope="col"
@@ -199,18 +210,7 @@ const Fellow = () => {
                       >
                         Email
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
-                      >
-                        Status
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
-                      >
-                        Subscription
-                      </th>
+
                       <th
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
@@ -221,81 +221,92 @@ const Fellow = () => {
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
                       >
+                       Status
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
+                      >
                         Actions
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {!!items.length && items?.map((item, i) => (
-                      <tr key={i}>
-                        <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          {i + 1}
-                        </td>
-                        <td className="align-middle fs-500  px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          <div className="font-semibold text-blue-900">
-                            {item.membership_id}
-                          </div>
-                        </td>
-                        <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          {item.first_name} {item.last_name}
-                        </td>
-                        <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          {item.email}
-                        </td>
-                        <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          <div className="flex items-center gap-x-3">
-                            <div
-                              className={`px-2 py-1 rounded font-semibold border ${
-                                item.status === "Pending" ||
-                                item.status === "Inactive"
-                                  ? `bg-orange-100`
-                                  : `bg-blue-200`
-                              }`}
-                            >
-                              {item.status}
+                    {!!items.length &&
+                      items?.map((item, i) => (
+                        <tr key={i}>
+                          <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                            {i + 1}
+                          </td>
+                          <td className="align-middle fs-500  px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                            <div className="font-semibold text-blue-900">
+                              <img src={item.passport} alt="passport" className="rounded-full w-14 h-14" />
+                              {item.membership_id}
                             </div>
-                            {item.status === "Pending" ||
-                            item.status === "Inactive" ? (
-                              <span
-                                className="underline cursor-pointer font-medium text-blue-900"
-                                onClick={() => openActivate(item)}
-                              >
-                                Activate
+                          </td>
+                          <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                           <p> {item.first_name}</p>
+                           <p>{item.last_name}</p>
+                          </td>
+                          <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                            {item.email}
+                          </td>
+                          <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                          {dayjs(item.created_at).format("DD-MMM -YYYY")}
+                          </td>
+                          <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                            {item?.isSubscribed === "0" ? (
+                              <span className="px-2 py-1 text-sm bg-orange-100 font-medium rounded-lg">
+                                Unsubscribed
                               </span>
                             ) : (
-                              <span
-                                className="underline cursor-pointer font-medium text-red-800"
-                                onClick={() => openDeactivate(item)}
-                              >
-                                Deactivate
+                              <span className="px-2 py-1 text-sm bg-green-100 font-medium rounded-lg">
+                                Subscribed
                               </span>
                             )}
-                          </div>
-                        </td>
-                        <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          {item?.isSubscribed === "0" ? (
-                            <span className="px-2 py-1 text-sm bg-orange-100 font-medium rounded-lg">
-                              Unsubscribed
-                            </span>
-                          ) : (
-                            <span className="px-2 py-1 text-sm bg-green-100 font-medium rounded-lg">
-                              Subscribed
-                            </span>
-                          )}
-                        </td>
-                        <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          {dayjs(item.created_at).format("DD-MMM -YYYY")}
-                        </td>
-                        <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          <div className="flex gap-x-3">
-                            <BsEyeFill
-                              onClick={() => openDetails(item)}
-                              className="text-xl text-blue-900"
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                          </td>
+                          <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                            <div className="flex items-center gap-x-3">
+                              <div
+                                className={`px-2 py-1 rounded font-semibold border ${
+                                  item.status === "Pending" ||
+                                  item.status === "Inactive"
+                                    ? `bg-orange-100`
+                                    : `bg-blue-200`
+                                }`}
+                              >
+                                {/* {item.status} */}
+                              </div>
+                              {item.status === "Pending" ||
+                              item.status === "Inactive" ? (
+                                <span
+                                  className="underline cursor-pointer font-medium text-blue-900"
+                                  onClick={() => openActivate(item)}
+                                >
+                                  Activate
+                                </span>
+                              ) : (
+                                <span
+                                  className="underline cursor-pointer font-medium text-red-800"
+                                  onClick={() => openDeactivate(item)}
+                                >
+                                  Deactivate
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                         
+                         
+                          <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                            <div className="flex gap-x-3">
+                              <BsEyeFill
+                                onClick={() => openDetails(item)}
+                                className="text-xl text-blue-900"
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -305,12 +316,12 @@ const Fellow = () => {
       </div>
       {showAddMemberPopup && (
         <div className="popup">
-          <AddFellow onClose={handleCloseAddMemberPopup} />
+          <AddMembers onClose={handleCloseAddMemberPopup} />
         </div>
       )}
-      {
-        showDetails && <MemberModal item={selected} close={() => setShowDetails(false)}/>
-      }
+      {showDetails && (
+        <MemberModal item={selected} close={() => setShowDetails(false)} />
+      )}
       <Activate title={""} noHead>
         <ReusableModal
           title={"Are you sure you want to activate this account?"}
@@ -335,4 +346,4 @@ const Fellow = () => {
   );
 };
 
-export default Fellow;
+export default Members;

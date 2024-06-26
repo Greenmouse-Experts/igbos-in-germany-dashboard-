@@ -20,7 +20,12 @@ const ChangePassword = ({ close, refetch }) => {
     fd.append("old_password", oldPassword);
     fd.append("new_password", newPassword);
     fd.append("new_password_confirmation", newPassword2);
-    handlePost(`admin/profile/update/password`, fd, `multipart/form-data`, onSuccess);
+    handlePost(
+      `admin/profile/update/password`,
+      fd,
+      `multipart/form-data`,
+      onSuccess
+    );
   };
   return (
     <>
@@ -33,7 +38,7 @@ const ChangePassword = ({ close, refetch }) => {
         />
       </div>
       <div className="mt-4">
-      <label className="text-lg font-medium">New Password</label>
+        <label className="text-lg font-medium">New Password</label>
         <input
           type="password"
           className="border border-gray-400 w-full mt-2 p-2 rounded"
@@ -41,7 +46,7 @@ const ChangePassword = ({ close, refetch }) => {
         />
       </div>
       <div className="mt-4">
-      <label className="text-lg font-medium">Confirm New Password</label>
+        <label className="text-lg font-medium">Confirm New Password</label>
         <input
           type="password"
           className="border border-gray-400 w-full mt-2 p-2 rounded"
@@ -52,7 +57,7 @@ const ChangePassword = ({ close, refetch }) => {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="w-full py-3 bg-[#291670] font-semibold text-lg rounded text-white"
+          className="w-full py-3 bg-[#015907] font-semibold text-lg rounded text-white"
         >
           {loading ? `Submiting...` : `Submit`}
         </button>

@@ -10,18 +10,23 @@ import axios from "axios";
 import { AiFillEye } from "react-icons/ai";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
-const Login = () => {
+const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
 
   const togglePassword = () => {
     setShowPassword(!showPassword); // Toggle the showPassword state
+  };
+  const togglePassword2 = () => {
+    setShowPassword2(!showPassword2); // Toggle the showPassword state
   };
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [logData, setLogData] = useState({
-    login_details: "",
+    code: "",
     password: "",
+    password_confirmation: "",
   });
 
   const handleInput = (e) => {
@@ -33,30 +38,24 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (logValidate()) {
+    if (isValidate()) {
       const fd = new FormData();
       Object.entries(logData).forEach(([key, value]) => {
         fd.append(key, value);
       });
       setIsLoading(true);
-      axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, fd, {
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/auth/password/reset`, fd, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((res) => {
           if (res.data.code === 200) {
-            localStorage.setItem("igbo_token", res.data.token);
             toast.success(res.data.message);
-            localStorage.setItem(
-              "fName",
-              res.data.data.name_of_member_organization
-            );
-            localStorage.setItem("igbo_sub", res.data.data.isSubscribed);
-            localStorage.setItem("igbo_email", res.data.data.email);
-            usenavigate("/dashboard/");
+            usenavigate("/login");
           } else {
-            toast.error("Email or Passward is Incorrect");
+            toast.error("something went wrong");
           }
         })
         .catch((err) => {
@@ -76,44 +75,64 @@ const Login = () => {
         });
     }
   };
-  const logValidate = () => {
-    let result = true;
-    if (logData.login_details === "" || logData.login_details === null) {
-      result = false;
-      toast.error("Please enter Email");
+  const isValidate = () => {
+    let isProceed = true;
+    let errorMessages = ""; // Create a variable to store error messages
+
+    if (
+      logData.code === "" ||
+      logData.password === "" ||
+      logData.password_confirmation === ""
+    ) {
+      isProceed = false;
+      errorMessages += "Please fill all inputs. ";
+    }
+    if (logData.code === "") {
+      isProceed = false;
+      toast.error("Please enter reset code");
+    }
+    if (logData.password.length <= 7) {
+      isProceed = false;
+      toast.error("Password must be at least 8 Letters");
     }
 
-    if (logData.password === "" || logData.password === null) {
-      result = false;
-      toast.error("Please enter Password");
+    if (logData.password_confirmation !== logData.password) {
+      isProceed = false;
+      errorMessages += "Password and Confirm Password do not match. ";
     }
-   
 
-    return result;
+    if (!isProceed) {
+      toast.error(errorMessages);
+    }
+
+    return isProceed;
   };
+
   return (
     <section className="px-0 py-0 grid xl:grid-cols-2 grid-cols-1 items-center">
       <div className="">
-        <form onSubmit={handleSubmit} action="submit" className="login md:w-[32rem] w-full mx-auto">
+        <form
+          onSubmit={handleSubmit}
+          action="submit"
+          className="login md:w-[32rem] w-full mx-auto"
+        >
           <a href="http://ndiigbogermany.org">
             <img src={logo} alt="logo" />
           </a>
           <div className="log_head">
-            <h3>Sign in</h3>
-            
-            <p>  Please login to continue</p>
+            <h3>Reset Password</h3>
           </div>
           <div className="input_log">
-            <label htmlFor="email">Email or Username</label>
+            <label htmlFor="email">Code</label>
             <div>
               {" "}
               <HiOutlineMail />{" "}
               <input
                 type="text"
-                name="login_details"
-                placeholder="Enter Email or Username"
+                name="code"
+                placeholder="Enter reset code"
                 onChange={handleInput}
-                value={logData.login_details}
+                value={logData.code}
               />
             </div>
           </div>
@@ -131,7 +150,31 @@ const Login = () => {
               />{" "}
               <span className="toggle-password" onClick={togglePassword}>
                 <span className="eye-icon">
-                {showPassword ? (
+                  {showPassword ? (
+                    <IoMdEyeOff size={27} color="#015907" />
+                  ) : (
+                    <IoMdEye size={27} color="#015907" />
+                  )}
+                </span>{" "}
+              </span>
+            </div>
+          </div>
+          <div className="input_log">
+            <label htmlFor="password_confirmation">Confirm Password</label>
+            <div>
+              {/* <BsKey className="icon" /> */}
+              <input
+                placeholder="Confirm Password"
+                id="password_confirmation"
+                name="password_confirmation"
+                type={showPassword2 ? "text" : "password"}
+                value={logData.password_confirmation}
+                onChange={handleInput}
+              />
+
+              <span className="toggle-password" onClick={togglePassword2}>
+                <span className="eye-icon">
+                  {showPassword2 ? (
                     <IoMdEyeOff size={27} color="#015907" />
                   ) : (
                     <IoMdEye size={27} color="#015907" />
@@ -142,20 +185,20 @@ const Login = () => {
           </div>
 
           <p className="text-grey-800 font-normal mt-2 ">
-                 Forgot Password?{" "}
-               <Link to="/forgot-password"
-                  className="text-[#015907] font-medium underline pb-1 cursor-pointer"
-                
-                >
-                  Click here
-                </Link>
-              </p>
+            
+            <Link
+              to="/forgot-password"
+              className="text-[#015907] font-medium underline pb-1 cursor-pointer"
+            >
+              Resent code{" "}
+            </Link>
+          </p>
 
           <button type="submit" className="login_btn" disabled={isLoading}>
-            {isLoading ? "Verifying..." : "Login"}
+            {isLoading ? "Verifying..." : "Continue"}
           </button>
           <p>
-            Don't have an account?{" "}
+            Don,t have an account?{" "}
             <Link to="/">
               <span className="text-[#015907] font-medium">Create Account</span>
             </Link>
@@ -174,4 +217,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

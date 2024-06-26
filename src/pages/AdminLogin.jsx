@@ -31,32 +31,32 @@ const AdminLogin = () => {
       });
       setIsLoading(true);
       axios
-        .post(
-          `${process.env.REACT_APP_API_URL}/auth/admin/login`,
-          fd,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
+        .post(`${process.env.REACT_APP_API_URL}/auth/admin/login`, fd, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           console.log(res);
           if (res.data.code === 200) {
             toast.success(res.data.message);
-            localStorage.setItem("bripan_token", res.data.token);
+            localStorage.setItem("igbo_token", res.data.token);
             usenavigate("/admin/");
           } else {
             toast.error(res.data.message);
           }
         })
         .catch((err) => {
-          if(err?.response?.data?.message){
-            toast.error(err?.response?.data?.message)
+          if (err?.response?.data?.message) {
+            toast.error(err?.response?.data?.message);
           }
-          if(err?.response?.data?.errors){Object.entries(err?.response?.data?.errors).forEach(([key, value]) => {
-            toast.error(value[0]);
-          });}
+          if (err?.response?.data?.errors) {
+            Object.entries(err?.response?.data?.errors).forEach(
+              ([key, value]) => {
+                toast.error(value[0]);
+              }
+            );
+          }
         })
         .finally(() => {
           setIsLoading(false);
@@ -81,7 +81,9 @@ const AdminLogin = () => {
   return (
     <div className="main_login">
       <form onSubmit={handleSubmit} action="submit" className="login">
-      <a href="https://bripan.org.ng/"><img src={logo} alt="" /></a>
+        <a href="http://ndiigbogermany.org/">
+          <img src={logo} alt="" />
+        </a>
         <div className="log_head">
           <h3>Admin Login</h3>
           <p>Fill in your credentials to login to the dashboard</p>

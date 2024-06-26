@@ -11,7 +11,7 @@ const RegisterSuccess = ({close}) => {
           className="w-56 mx-auto"
         />
         <p className="text-center font-semibold text-2xl">Registration Successful</p>
-        <p className="text-center mt-4">Your registration has been successfully processed. Within the next 24 hours, you will receive an email from the administrator containing your login details for accessing your Bripan dashboard</p>
+        <p className="text-center mt-4">Your registration has been successfully processed. Within the next 24 hours, you will receive an email from the administrator containing your login details for accessing your Admin dashboard</p>
       </div>
       <FaTimes className="absolute top-3 right-3 text-gray-400" onClick={close}/>
     </div>

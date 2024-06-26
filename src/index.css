@@ -1,40 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 :root {
-  --font: 'Montserrat', sans-serif;
-  --red: #291670;
-
+  --font: "Montserrat", sans-serif;
+  --red: #015907;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
-.h2{
- 
-font-size: 2.3rem;
-font-style: normal;
-font-weight: 700;
-    line-height: 185.5%;
-    }
+.h2 {
+  font-size: 2.3rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 185.5%;
+}
 
-
-*{
+* {
   font-family: var(--font) !important;
-  margin: 0;   
+  margin: 0;
   padding: 0;
   outline: 0;
   list-style: none;
   text-decoration: none;
   box-sizing: border-box;
   scroll-behavior: smooth;
-
 }
 
-html{
+html {
   overflow-x: hidden;
-  scroll-behavior: smooth;  
+  scroll-behavior: smooth;
   scroll-padding-top: 3rem;
 }

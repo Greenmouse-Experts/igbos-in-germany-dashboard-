@@ -1,19 +1,19 @@
 import React from "react";
-import { MdAddCircleOutline } from "react-icons/md";
-import useModal from "../../../hook/useModal";
 import useGetHook from "../../../hook/useGet";
-import { useState } from "react";
-import usePostHook from "../../../hook/usePost";
-import { toast } from "react-toastify";
-import AddDues from "../../../admin/Dues/Dues/AddDues";
-import { formatAsNgnMoney } from "../../../services/helpers";
+import useModal from "../../../hook/useModal";
+import { MdAddCircleOutline } from "react-icons/md";
+import AddBanksModal from "../../../admin/Dues/Banks/AddBanks";
+import dayjs from "dayjs";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { LiaEdit } from "react-icons/lia";
-import EditDues from "../../../admin/Dues/Dues/EditDues";
 import ReusableModal from "../../../components/ReusableModal";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import usePostHook from "../../../hook/usePost";
+import EditBanksModal from "../../../admin/Dues/Banks/EditBanks";
 
-const AdminDues = () => {
-  const { data, isLoading, refetch } = useGetHook(`admin/dues`);
+const AdminSubBank = () => {
+  const { data, isLoading, refetch } = useGetHook(`admin/banks`);
   const { handlePost } = usePostHook();
   const [isBusy, setIsBusy] = useState(false);
   const { Modal: Delete, setShowModal: showDelete } = useModal();
@@ -31,16 +31,16 @@ const AdminDues = () => {
   const onSuccess = () => {
     setIsBusy(false);
     refetch();
-    toast.success("Dues deleted successfully");
+    toast.success("Bank Account deleted successfully");
     showDelete(false);
   };
   const handleDelete = () => {
     setIsBusy(true);
     const payload = {
-       due_id: selected.id,
+        bank_id: selected.id,
     };
     handlePost(
-      `admin/dues/delete`,
+      `admin/bank/delete`,
       payload,
       `application/json`,
       onSuccess
@@ -48,12 +48,13 @@ const AdminDues = () => {
   };
   return (
     <>
-      <div className="mx-2 p-5 bg-white min-h-[70vh]">
+      <div className="mx-3 bg-white p-5 min-h-[80vh] ml-6">
         <div className="flex justify-between">
           <div className="lg:w-8/12">
-            <p className="text-xl font-semibold">Igbos in Germany Dues List</p>
-            <p className="mt-2">
-              Add, edit and delete dues informations for members.
+            <p className="text-xl font-semibold">Available Banks</p>
+            <p>
+              Add, edit and delete bank informations used for collection of
+              subscription.
             </p>
           </div>
           <div>
@@ -83,31 +84,25 @@ const AdminDues = () => {
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
                       >
-                        Description
+                        Bank Name
                       </th>
                       <th
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
                       >
-                        Category
+                        Account Name
                       </th>
                       <th
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
                       >
-                        Amount
+                        Account Number
                       </th>
                       <th
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
                       >
-                        Start Date
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
-                      >
-                        End Date
+                        Created At
                       </th>
                       <th
                         scope="col"
@@ -123,26 +118,17 @@ const AdminDues = () => {
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           {i + 1}
                         </td>
-                        <td className="align-middle fs-500  px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          <div className="w-48">
-                          {item.description}
-                          </div>
+                        <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                          {item.bank_name}
                         </td>
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          <div>
-                            <p>{item.category.name}</p>
-                          </div>
+                          {item.account_name}
                         </td>
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          <div>
-                            <p>{formatAsNgnMoney(item.amount)}</p>
-                          </div>
+                          {item.account_number}
                         </td>
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          {item.start_date}
-                        </td>
-                        <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          {item.end_date}
+                          {dayjs(item.created_at).format("DD/MM/YYYY")}
                         </td>
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           <div className="flex gap-x-3">
@@ -165,15 +151,15 @@ const AdminDues = () => {
           </div>
         </div>
       </div>
-      <Modal title={'Add Dues'}>
-        <AddDues close={() => setShowModal(false)} refetch={refetch}/>
+      <Modal title={"Add Bank Account"}>
+        <AddBanksModal close={() => setShowModal(false)} refetch={refetch} />
       </Modal>
-      <Edit title={selected?.name}>
-        <EditDues item={selected} close={() => showEdit(false)} refetch={refetch} />
+      <Edit title={selected?.account_name}>
+        <EditBanksModal item={selected} close={() => showEdit(false)} refetch={refetch} />
       </Edit>
       <Delete title="" noHead>
         <ReusableModal
-          title="Are you sure you want to delete this due?"
+          title="Are you sure you want to delete this account?"
           cancelTitle="No, cancel"
           actionTitle="Yes, delete"
           closeModal={() => showDelete(false)}
@@ -185,4 +171,4 @@ const AdminDues = () => {
   );
 };
 
-export default AdminDues;
+export default AdminSubBank;

@@ -1,19 +1,19 @@
 import React from "react";
 import { useState } from "react";
-import usePostHook from "../../../hook/usePost";
+// import usePostHook from "../../../hook/usePost";
 import { toast } from "react-toastify";
-import useGetHook from "../../../hook/useGet";
-import dayjs from "dayjs";
+// import useGetHook from "../../../hook/useGet";
+// import dayjs from "dayjs";
 
-const AddDues = ({ close, refetch }) => {
-  const { data } = useGetHook(`admin/category`);
+const AddSubscription = ({ close, refetch }) => {
+  // const { data } = useGetHook(`admin/category`);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [accNo, setAccNo] = useState("");
   const [amt, setAmt] = useState("");
   const [sDate, setSDate] = useState("");
   const [eDate, setEDate] = useState("");
-  const { handlePost } = usePostHook();
+  // const { handlePost } = usePostHook();
   const onSuccess = () => {
     setLoading(false);
     refetch();
@@ -23,26 +23,26 @@ const AddDues = ({ close, refetch }) => {
   const handleSubmit = async () => {
     setLoading(true);
     const fd = new FormData();
-    fd.append("description", name);
-    fd.append("payment_category_id", accNo);
-    fd.append("payment_category_id", accNo);
-    fd.append("amount", amt);
-    fd.append("start_date", dayjs(sDate).format("DD/MM/YYYY"));
-    fd.append("end_date", dayjs(eDate).format("DD/MM/YYYY"));
-    handlePost(`admin/dues/post`, fd, `multipart/form-data`, onSuccess);
+    // fd.append("description", name);
+    // fd.append("payment_category_id", accNo);
+    // fd.append("payment_category_id", accNo);
+    // fd.append("amount", amt);
+    // fd.append("start_date", dayjs(sDate).format("DD/MM/YYYY"));
+    // fd.append("end_date", dayjs(eDate).format("DD/MM/YYYY"));
+    // handlePost(`admin/dues/post`, fd, `multipart/form-data`, onSuccess);
   };
   return (
     <>
       <div className="">
         <div>
-          <label className="text-lg font-medium">Dues Category</label>
+          <label className="text-lg font-medium">Subscription Bank</label>
           <div className="border border-gray-400 rounded mt-2">
             <select
               className="w-full py-3 p-2 rounded"
               onChange={(e) => setAccNo(e.target.value)}
             >
               <option value={""}></option>
-              {data?.data.map((item, i) => (
+              {[" "]?.data?.map((item, i) => (
                 <option value={item.id} key={i}>
                   {item.name}
                 </option>
@@ -51,8 +51,8 @@ const AddDues = ({ close, refetch }) => {
           </div>
         </div>
         <div className="mt-4">
-          <label className="text-lg font-medium">Description</label>
-          <textarea
+          <label className="text-lg font-medium">Subscription Name</label>
+          <input type="text"
             className="border border-gray-400 w-full mt-2 p-2 rounded"
             onChange={(e) => setName(e.target.value)}
           />
@@ -65,24 +65,7 @@ const AddDues = ({ close, refetch }) => {
             onChange={(e) => setAmt(e.target.value)}
           />
         </div>
-        <div className="grid grid-cols-2 gap-x-4">
-          <div className="mt-4">
-            <label className="text-lg font-medium">Start Date</label>
-            <input
-              type="date"
-              className="border border-gray-400 w-full mt-2 p-2 rounded"
-              onChange={(e) => setSDate(e.target.value)}
-            />
-          </div>
-          <div className="mt-4">
-            <label className="text-lg font-medium">End Date</label>
-            <input
-              type="date"
-              className="border border-gray-400 w-full mt-2 p-2 rounded"
-              onChange={(e) => setEDate(e.target.value)}
-            />
-          </div>
-        </div>
+       
       </div>
       <div className="mt-8">
         <button
@@ -97,4 +80,4 @@ const AddDues = ({ close, refetch }) => {
   );
 };
 
-export default AddDues;
+export default AddSubscription;

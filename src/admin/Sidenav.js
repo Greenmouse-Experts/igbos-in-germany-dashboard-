@@ -14,6 +14,7 @@ import useModal from "../hook/useModal";
 const Sidebar = ({ showSidebar, toggleSidebar }) => {
   const [showUsersMenu, setShowUsersMenu] = useState(false);
   const [duesMenu, setDuesMenu] = useState(false)
+  const [subscriptionMenu, setSubscriptionMenu] = useState(false)
   const [payments, setPayments] = useState(false)
   const navigate = useNavigate()
   const {Modal, setShowModal} = useModal()
@@ -26,6 +27,11 @@ const Sidebar = ({ showSidebar, toggleSidebar }) => {
   const toggleDuesMenu = () => {
     if (showSidebar) {
       setDuesMenu(!duesMenu);
+    }
+  };
+  const toggleSubscriptionMenu = () => {
+    if (showSidebar) {
+      setSubscriptionMenu(!duesMenu);
     }
   };
 
@@ -71,7 +77,7 @@ const Sidebar = ({ showSidebar, toggleSidebar }) => {
       className={showSidebar ? "sidebar" : "sidebar closed"}
     >
       <div className={showSidebar ? "side_img" : "img-side"}>
-      <a href="https://bripan.org.ng/"><img className="img-logo" src={logo} alt="Logo" /></a>{" "}
+      <a href="http://ndiigbogermany.org/"><img className="img-logo" src={logo} alt="Logo" /></a>{" "}
         <div className="men" onClick={toggleSidebar}>
           <AiOutlineClose />
         </div>
@@ -86,6 +92,25 @@ const Sidebar = ({ showSidebar, toggleSidebar }) => {
             </NavLink>
           </li>
           <li className="nav-item">
+            <NavLink to="member" className="nav-link">
+              <span className="nav-icon">
+              <MdOutlineManageAccounts /> {showSidebar && "Members"}
+              </span>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="subscription/list" className="nav-link">
+              <span className="nav-icon">
+              <MdOutlineManageAccounts /> {showSidebar && "subscription"}
+              </span>
+            </NavLink>
+          </li>
+          {/* <li className="submenu-item">
+                  <NavLink to="subscription/list" className="nav-link">
+                    {showSidebar && "Add Subscription"}
+                  </NavLink>
+                </li> */}
+          {/* <li className="nav-item">
             <span className="nav-link" onClick={toggleUsersMenu}>
               <span className="nav-icon">
                 <MdOutlineManageAccounts /> {showSidebar && "Members"}
@@ -110,7 +135,30 @@ const Sidebar = ({ showSidebar, toggleSidebar }) => {
                 </li>
               </ul>
             )}
-          </li>
+          </li> */}
+           {/* <li className="nav-item">
+            <span className="nav-link" onClick={toggleSubscriptionMenu}>
+              <span className="nav-icon">
+                <MdOutlinePayment /> {showSidebar && "Subscription"}
+              </span>
+              {showSidebar && (
+                <div className="bb">
+                  {duesMenu ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                </div>
+              )}
+            </span>
+            {subscriptionMenu && (
+              <ul className="submenu">
+              
+              
+                <li className="submenu-item">
+                  <NavLink to="subscription/list" className="nav-link">
+                    {showSidebar && "Add Subscription"}
+                  </NavLink>
+                </li>
+              </ul>
+            )}
+          </li> */}
           <li className="nav-item">
             <span className="nav-link" onClick={toggleDuesMenu}>
               <span className="nav-icon">

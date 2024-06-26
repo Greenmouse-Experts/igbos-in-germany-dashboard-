@@ -4,7 +4,7 @@ import usePostHook from "../../../hook/usePost";
 import { toast } from "react-toastify";
 
 const AddBanksModal = ({ close, refetch }) => {
-    const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [accName, setAccName] = useState("");
   const [accNo, setAccNo] = useState("");
   const [bankName, setBankName] = useState("");
@@ -42,7 +42,7 @@ const AddBanksModal = ({ close, refetch }) => {
         />
       </div>
       <div className="mt-4">
-        <label className="text-lg font-medium">Account</label>
+        <label className="text-lg font-medium">Account Number</label>
         <input
           type="number"
           className="border border-gray-400 w-full mt-2 p-2 rounded"
@@ -53,7 +53,7 @@ const AddBanksModal = ({ close, refetch }) => {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="w-full py-3 bg-[#291670] font-semibold text-lg rounded text-white"
+          className="w-full py-3 bg-[#015907] font-semibold text-lg rounded text-white"
         >
           {loading ? `Submiting...` : `Submit`}
         </button>

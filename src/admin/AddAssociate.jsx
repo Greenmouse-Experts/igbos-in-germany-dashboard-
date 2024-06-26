@@ -52,7 +52,7 @@ const AddAssociate = ({onClose}) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(logindata);
+    // console.log(logindata);
     const fd = new FormData();
     Object.entries(logindata).forEach(([key, value]) => {
       fd.append(key, value);
@@ -62,15 +62,15 @@ const AddAssociate = ({onClose}) => {
 
       CustomAdd.post("admin/member/add", fd)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
             if(res.status === 200){
-              console.log(res.data)
-              console.log(res.data.errors);
+              // console.log(res.data)
+              // console.log(res.data.errors);
               toast.success("Member Added Successfully");
               onClose(); 
             }
             else{
-              console.log(res);
+              // console.log(res);
               // toast.error(res.response.data.code)
             }
             
@@ -80,7 +80,7 @@ const AddAssociate = ({onClose}) => {
           Object.entries(err.response.data.errors).forEach(([key,value])=> {
             toast.error(value[0]);
           })
-          console.log();
+          
         })
         .finally(() => {
           setIsLoading(false);

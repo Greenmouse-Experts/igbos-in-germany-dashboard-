@@ -9,12 +9,13 @@ const AddFellow = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [logindata, setLoginData] = useState({
-    first_name: "",
-    last_name: "",
+    name_of_representative: "",
     email: "",
     username: "",
-    account_type: "Fellow",
     phone_number: "",
+    name_of_member_organization:"",
+    address: "",
+    password:"password"
   });
 
   const handleInput = (e) => {
@@ -27,12 +28,12 @@ const AddFellow = ({ onClose }) => {
     let errorMessages = ""; // Create a variable to store error messages
 
     if (
-      logindata.first_name === "" ||
-      logindata.last_name === "" ||
+      logindata.name_of_representative === "" |
       logindata.username === "" ||
       logindata.email === "" ||
-      logindata.account_type === "" ||
-      logindata.phone_number === ""
+      logindata.phone_number === "" ||
+      logindata.name_of_member_organization === "" || 
+      logindata.address === ""
     ) {
       isProceed = false;
       errorMessages += "Please fill all inputs. ";
@@ -52,7 +53,7 @@ const AddFellow = ({ onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(logindata);
+    // console.log(logindata);
     const fd = new FormData();
     Object.entries(logindata).forEach(([key, value]) => {
       fd.append(key, value);
@@ -64,20 +65,20 @@ const AddFellow = ({ onClose }) => {
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
-            console.log(res.data);
-            console.log(res.data.errors);
+            console.log(res?.data);
+            console.log(res?.data?.errors);
             toast.success("Member Added Successfully");
             onClose();
           } else {
             console.log(res);
-            // toast.error(res.response.data.code)
+            toast.error(res?.response?.data?.code)
           }
         })
         .catch((err) => {
-          Object.entries(err.response.data.errors).forEach(([key, value]) => {
-            toast.error(value[0]);
-          });
-          console.log();
+          // Object.entries(err?.response?.data?.errors).forEach(([key, value]) => {
+          //   toast.error(value[0]);
+          // });
+          console.log(err);
         })
         .finally(() => {
           setIsLoading(false);
@@ -94,67 +95,42 @@ const AddFellow = ({ onClose }) => {
         </span>
       </div>
       <form onSubmit={handleSubmit} action="submit" className="add_mem">
-        <div className="input_">
-          <label>Account Type</label>
-          <div className="radio">
-            <div className="">
-              <input
-                type="radio"
-                id="associate"
-                name="account_type"
-                value="Associate"
-                checked={logindata.account_type === "Associate"}
-                onChange={handleInput}
-              />
-              <label htmlFor="associate">Associate</label>
-            </div>
-
-            <div className="">
-              {" "}
-              <input
-                type="radio"
-                id="fellow"
-                name="account_type"
-                value="Fellow"
-                checked={logindata.account_type === "Fellow"}
-                onChange={handleInput}
-              />
-              <label htmlFor="fellow">Fellow</label>
-            </div>
+        <div className="input_log">
+          <label htmlFor=" Name of Representative (full names)">
+            {" "}
+            Name of Representative (full names)
+          </label>
+          <div>
+            {/* <HiOutlineUser className="icon" /> */}
+            <input
+              placeholder="Enter Name of Representative (full names)"
+              id="name_of_representative"
+              name="name_of_representative"
+              type="text"
+              value={logindata.name_of_representative}
+              onChange={handleInput}
+            />
           </div>
         </div>
-
+        <div className="input_log">
+          <label htmlFor=" Name of Representative (full names)">
+            {" "}
+            Name of Organization
+          </label>
+          <div>
+            {/* <HiOutlineUser className="icon" /> */}
+            <input
+              placeholder="Enter name of Organization"
+              id="name_of_member_organization"
+              name="name_of_member_organization"
+              type="text"
+              value={logindata.name_of_member_organization}
+              onChange={handleInput}
+            />
+          </div>
+        </div>
         <div className="double">
-          <div className="input_log">
-            <label htmlFor="firstName">First Name</label>
-            <div>
-              {/* <HiOutlineUser className="icon" /> */}
-              <input
-                placeholder="Enter First Name"
-                id="first_name"
-                name="first_name"
-                type="text"
-                value={logindata.first_name}
-                onChange={handleInput}
-              />
-            </div>
-          </div>
 
-          <div className="input_log">
-            <label htmlFor="last_name">Last Name</label>
-            <div>
-              {/* <HiOutlineUser className="icon" /> */}
-              <input
-                placeholder="Enter Last Name"
-                id="last_name"
-                name="last_name"
-                type="text"
-                value={logindata.last_name}
-                onChange={handleInput}
-              />
-            </div>
-          </div>
-        </div>
         <div className="input_log">
           <label htmlFor="username">Username</label>
           <div>
@@ -184,7 +160,9 @@ const AddFellow = ({ onClose }) => {
             />
           </div>
         </div>
+        </div>
 
+        <div className="double">
         <div className="input_log">
           <label htmlFor="phone_number">Phone Number</label>
           <div>
@@ -198,6 +176,23 @@ const AddFellow = ({ onClose }) => {
             />
           </div>
         </div>
+        <div className="input_log">
+          <label htmlFor="address">Address</label>
+          <div>
+            {/* <HiOutlineUser className="icon" /> */}
+            <input
+              placeholder="Enter Address"
+              id="address"
+              name="address"
+              type="text"
+              value={logindata.address}
+              onChange={handleInput}
+            />
+          </div>
+        </div>
+
+        </div>
+
         {isLoading ? (
           <div className="dotss">
             <ThreeDots

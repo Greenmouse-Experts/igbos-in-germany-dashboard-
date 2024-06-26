@@ -32,46 +32,30 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [logindata, setLoginData] = useState({
-    first_name: "",
+    name_of_representative: "",
     last_name: "",
     email: "",
     password: "",
     username: "",
     password_confirmation: "",
-    account_type: "",
     phone_number: "",
     address: "",
-    gender: "",
-    marital_status: "",
-    passport: null,
-    certificates: null,
-    place_business_employment: "",
-    nature_business_employment: "",
-    membership_professional_bodies: "",
-    previous_insolvency_work_experience: "",
-    referee_email_address: "",
+    name_of_member_organization:"",
+  
   });
 
   const resetInput = () => {
     setLoginData({
-      first_name: "",
+      name_of_representative: "",
       last_name: "",
       email: "",
       password: "",
       username: "",
       password_confirmation: "",
-      account_type: "",
       phone_number: "",
       address: "",
-      gender: "",
-      marital_status: "",
-      passport: null,
-      certificates: null,
-      place_business_employment: "",
-      nature_business_employment: "",
-      membership_professional_bodies: "",
-      previous_insolvency_work_experience: "",
-      referee_email_address: "",
+      name_of_member_organization:"",
+    
     });
   };
 
@@ -98,24 +82,12 @@ const Register = () => {
     let errorMessages = ""; // Create a variable to store error messages
 
     if (
-      logindata.first_name === "" ||
-      logindata.last_name === "" ||
+      logindata.name_of_representative === "" ||
       logindata.username === "" ||
       logindata.email === "" ||
       logindata.password === "" ||
       logindata.password_confirmation === "" ||
-      logindata.account_type === "" ||
-      logindata.phone_number === "" ||
-      logindata.address === "" ||
-      logindata.gender === "" ||
-      logindata.marital_status === "" ||
-      logindata.passport === null ||
-      logindata.certificates === null ||
-      logindata.place_business_employment === "" ||
-      logindata.nature_business_employment === "" ||
-      logindata.membership_professional_bodies === "" ||
-      logindata.previous_insolvency_work_experience === "" ||
-      logindata.referee_email_address === ""
+      logindata.name_of_member_organization === "" 
     ) {
       isProceed = false;
       errorMessages += "Please fill all inputs. ";
@@ -146,10 +118,12 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(logindata);
-    const fd = new FormData();
-    Object.entries(logindata).forEach(([key, value]) => {
-      fd.append(key, value);
-    });
+    
+
+  const fd = new FormData();
+  Object.entries({ ...logindata}).forEach(([key, value]) => {
+    fd.append(key, value);
+  });
     if (isValidate()) {
       setIsLoading(true); // Set loading state to true
 
@@ -164,19 +138,23 @@ const Register = () => {
           if (res.status) {
             toast.success("Registered Successfully");
             setShowModal(true);
-            resetInput()
+            resetInput();
             // navigate("/login");
           } else {
             toast.error(res.data.message);
           }
         })
         .catch((err) => {
-          if(err?.response?.data?.message){
-            toast.error(err?.response?.data?.message)
+          if (err?.response?.data?.message) {
+            toast.error(err?.response?.data?.message);
           }
-          if(err?.response?.data?.errors){Object.entries(err?.response?.data?.errors).forEach(([key, value]) => {
-            toast.error(value[0]);
-          });}
+          if (err?.response?.data?.errors) {
+            Object.entries(err?.response?.data?.errors).forEach(
+              ([key, value]) => {
+                toast.error(value[0]);
+              }
+            );
+          }
         })
         .finally(() => {
           setIsLoading(false);
@@ -197,67 +175,25 @@ const Register = () => {
           </div>
 
           {/* Add Account Type */}
-          <div className="input_">
-            <label>Account Type</label>
-            <div className="radio">
-              <div className="">
-                <input
-                  type="radio"
-                  id="associate"
-                  name="account_type"
-                  value="Associate"
-                  checked={logindata.account_type === "Associate"}
-                  onChange={hadleInput}
-                />
-                <label htmlFor="associate">Associate</label>
-              </div>
 
-              <div className="">
-                {" "}
-                <input
-                  type="radio"
-                  id="fellow"
-                  name="account_type"
-                  value="Fellow"
-                  checked={logindata.account_type === "Fellow"}
-                  onChange={hadleInput}
-                />
-                <label htmlFor="fellow">Fellow</label>
-              </div>
-            </div>
-          </div>
-
-          <div className="double">
+         
             <div className="input_log">
-              <label htmlFor="firstName">First Name</label>
+              <label htmlFor=" Name of Representative (full names)"> Name of Representative (full names)</label>
               <div>
                 {/* <HiOutlineUser className="icon" /> */}
                 <input
-                  placeholder="Enter First Name"
-                  id="first_name"
-                  name="first_name"
+                  placeholder="Enter Name of Representative (full names)"
+                  id="name_of_representative"
+                  name="name_of_representative"
                   type="text"
-                  value={logindata.first_name}
+                  value={logindata.name_of_representative}
                   onChange={hadleInput}
                 />
               </div>
             </div>
 
-            <div className="input_log">
-              <label htmlFor="last_name">Last Name</label>
-              <div>
-                {/* <HiOutlineUser className="icon" /> */}
-                <input
-                  placeholder="Enter Last Name"
-                  id="last_name"
-                  name="last_name"
-                  type="text"
-                  value={logindata.last_name}
-                  onChange={hadleInput}
-                />
-              </div>
-            </div>
-          </div>
+           
+          
           <div className="double">
             <div className="input_log">
               <label htmlFor="email">Email</label>
@@ -275,7 +211,7 @@ const Register = () => {
             </div>
 
             <div className="input_log">
-              <label htmlFor="phone_number">Phone Number</label>
+              <label htmlFor="phone_number">Phone Number (optional)</label>
               <div>
                 <input
                   placeholder="Enter Phone Number"
@@ -306,7 +242,7 @@ const Register = () => {
 
           {/* Add Address */}
           <div className="input_log">
-            <label htmlFor="address">Address</label>
+            <label htmlFor="address">Address (optional)</label>
             <div>
               <input
                 placeholder="Enter Your Address"
@@ -319,152 +255,25 @@ const Register = () => {
             </div>
           </div>
 
-          <div className="double">
-            <div className="input_log">
-              <label htmlFor="gender">Gender</label>
-              <div>
-                <select
-                  id="gender"
-                  name="gender"
-                  value={logindata.gender}
-                  onChange={hadleInput}
-                >
-                  <option disabled value="">
-                    Select Gender
-                  </option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              </div>
-            </div>
-            <div className="input_log">
-              <label htmlFor="marital_status">Marital Status</label>
-              <div>
-                <select
-                  id="marital_status"
-                  name="marital_status"
-                  value={logindata.marital_status}
-                  onChange={hadleInput}
-                >
-                  <option disabled value="">
-                    Select Marital Status
-                  </option>
-                  <option value="Married">Married</option>
-                  <option value="Single">Single</option>
-                  <option value="Divorced">Divorced</option>
-                  <option value="Engaged">Engaged</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div className="input_log">
-            <label htmlFor="passport">Please upload your passport</label>
-            <div>
-              <input
-                id="passport"
-                name="passport"
-                type="file"
-                accept="image/*"
-                onChange={hadleInput}
-              />
-            </div>
-          </div>
-
-          <div className="input_log">
-            <label htmlFor="certificates">
-              Please Upload your Certificates (JPEG, PNG or PDF)
-            </label>
-            <div>
-              <input
-                id="certificates"
-                name="certificates"
-                type="file"
-                accept=".jpeg, .jpg, .png, .pdf"
-                onChange={hadleInput}
-              />
-            </div>
-          </div>
-
           {/* Add Place of Business */}
-          <div className="input_log">
-            <label htmlFor="place_business_employment">
-              Place of Business or Employment
-            </label>
-            <div>
-              <input
-                placeholder="Where do you work? "
-                id="place_business_employment"
-                name="place_business_employment"
-                type="text"
-                value={logindata.place_business_employment}
-                onChange={hadleInput}
-              />
-            </div>
-          </div>
 
-          <div className="input_log">
-            <label htmlFor="nature_business_employment">
-              Nature of Business or Employment
-            </label>
-            <div>
-              <input
-                placeholder="Type of work yo do"
-                id="nature_business_employment"
-                name="nature_business_employment"
-                type="text"
-                value={logindata.nature_business_employment}
-                onChange={hadleInput}
-              />
-            </div>
-          </div>
           <div className="input_log">
             <label htmlFor="membership_professional_bodies">
-              Membership of other Professional Bodies/Reg. Numbers
+              Name of Member Organization
             </label>
             <div>
               <input
-                placeholder="Professional Bodies/Reg. Numbers"
-                id="membership_professional_bodies"
-                name="membership_professional_bodies"
+                placeholder=" Name of Member Organization"
+                id="name_of_member_organization"
+                name="name_of_member_organization"
                 type="text"
-                value={logindata.membership_professional_bodies}
+                value={logindata.name_of_member_organization}
                 onChange={hadleInput}
               />
             </div>
           </div>
 
-          <div className="input_log">
-            <label htmlFor="previous_insolvency_work_experience">
-              Detials of Previous Insolvency Work Experience
-            </label>
-            <div>
-              <textarea
-                placeholder="Previous Insolvency Work Experience"
-                id="previous_insolvency_work_experience"
-                name="previous_insolvency_work_experience"
-                type="text"
-                value={logindata.previous_insolvency_work_experience}
-                onChange={hadleInput}
-                cols="30"
-                rows="10"
-              ></textarea>
-            </div>
-          </div>
-
-          <div className="input_log">
-            <label htmlFor="referee_email_address">Referee Email Address</label>
-            <div>
-              <input
-                placeholder="Enter Referee Email Address"
-                id="referee_email_address"
-                name="referee_email_address"
-                type="text"
-                value={logindata.referee_email_address}
-                onChange={hadleInput}
-              />
-            </div>
-          </div>
+       
 
           <div className="double">
             <div className="input_log">
@@ -517,7 +326,7 @@ const Register = () => {
           </button>
           <p>
             Already Registered?{" "}
-            <Link className="already" to="/login">
+            <Link className="already text-[#015907] font-medium" to="/login">
               Login
             </Link>
           </p>

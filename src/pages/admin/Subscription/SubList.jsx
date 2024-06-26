@@ -5,15 +5,17 @@ import useGetHook from "../../../hook/useGet";
 import { useState } from "react";
 import usePostHook from "../../../hook/usePost";
 import { toast } from "react-toastify";
-import AddDues from "../../../admin/Dues/Dues/AddDues";
+
 import { formatAsNgnMoney } from "../../../services/helpers";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { LiaEdit } from "react-icons/lia";
 import EditDues from "../../../admin/Dues/Dues/EditDues";
 import ReusableModal from "../../../components/ReusableModal";
+import AddSubscription from "../../../admin/Subscription/AddSubscription";
 
-const AdminDues = () => {
-  const { data, isLoading, refetch } = useGetHook(`admin/dues`);
+const SubList = () => {
+  const { data, isLoading, refetch } = useGetHook(`admin/subscription`);
+  console.log("sub", data)
   const { handlePost } = usePostHook();
   const [isBusy, setIsBusy] = useState(false);
   const { Modal: Delete, setShowModal: showDelete } = useModal();
@@ -48,22 +50,22 @@ const AdminDues = () => {
   };
   return (
     <>
-      <div className="mx-2 p-5 bg-white min-h-[70vh]">
+      <div className="mx-2 p-5 bg-white min-h-[70vh] ml-6">
         <div className="flex justify-between">
           <div className="lg:w-8/12">
-            <p className="text-xl font-semibold">Igbos in Germany Dues List</p>
+            <p className="text-xl font-semibold">Igbos in Germany Subscription List</p>
             <p className="mt-2">
               Add, edit and delete dues informations for members.
             </p>
           </div>
           <div>
-            <button
+            {/* <button
               className="flex items-center  gap-x-2 p-2 px-4 text-blue-900 font-semibold border border-blue-900 rounded"
               onClick={() => setShowModal(true)}
             >
               <MdAddCircleOutline />
               Add
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="mt-8">
@@ -89,7 +91,7 @@ const AdminDues = () => {
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
                       >
-                        Category
+                        Bank
                       </th>
                       <th
                         scope="col"
@@ -97,18 +99,7 @@ const AdminDues = () => {
                       >
                         Amount
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
-                      >
-                        Start Date
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
-                      >
-                        End Date
-                      </th>
+                    
                       <th
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
@@ -118,7 +109,7 @@ const AdminDues = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {data?.data.map((item, i) => (
+                    {data?.data?.map((item, i) => (
                       <tr key={i}>
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           {i + 1}
@@ -130,7 +121,7 @@ const AdminDues = () => {
                         </td>
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           <div>
-                            <p>{item.category.name}</p>
+                            <p>{item.bank}</p>
                           </div>
                         </td>
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
@@ -147,11 +138,11 @@ const AdminDues = () => {
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           <div className="flex gap-x-3">
                             <LiaEdit
-                              onClick={() => openEdit(item)}
+                              // onClick={() => openEdit(item)}
                               className="text-xl text-blue-900"
                             />
                             <RiDeleteBin5Line
-                              onClick={() => openDelete(item)}
+                              // onClick={() => openDelete(item)}
                               className="text-lg text-red-600"
                             />
                           </div>
@@ -165,8 +156,8 @@ const AdminDues = () => {
           </div>
         </div>
       </div>
-      <Modal title={'Add Dues'}>
-        <AddDues close={() => setShowModal(false)} refetch={refetch}/>
+      <Modal title={'Set Subscription'}>
+        <AddSubscription close={() => setShowModal(false)} refetch={refetch}/>
       </Modal>
       <Edit title={selected?.name}>
         <EditDues item={selected} close={() => showEdit(false)} refetch={refetch} />
@@ -185,4 +176,4 @@ const AdminDues = () => {
   );
 };
 
-export default AdminDues;
+export default SubList;

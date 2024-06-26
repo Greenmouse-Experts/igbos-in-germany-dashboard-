@@ -1,37 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { BiSearch, BiPlus } from "react-icons/bi";
-import "../../stylesheet/admin.css";
 import dayjs from "dayjs";
+import { ThreeCircles } from "react-loader-spinner";
+import AddFellow from "../../admin/AddFellow";
+import useGetHook from "../../hook/useGet";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { ThreeCircles } from "react-loader-spinner";
-import AddAssociate from "../../admin/AddAssociate";
-import { BsEye, BsEyeFill, BsThreeDotsVertical } from "react-icons/bs";
-import useGetHook from "../../hook/useGet";
+import { BsEyeFill } from "react-icons/bs";
 import useModal from "../../hook/useModal";
 import ReusableModal from "../../components/ReusableModal";
 import axios from "axios";
 import { toast } from "react-toastify";
 import MemberModal from "../../admin/members/memberModal";
 
-const Associate = () => {
+const Members = () => {
   const {
     data,
     isLoading: loading,
     refetch,
-  } = useGetHook("admin/member/retrieve/all?keyword=associate");
-  const [items, setItems] = useState([]);
-  const [isBusy, setIsBusy] = useState();
-  const [selected, setSelected] = useState();
+  } = useGetHook("admin/member/retrieve/all");
   const [showDetails, setShowDetails] = useState(false);
-
   const [showAddMemberPopup, setShowAddMemberPopup] = useState(false);
 
-  useEffect(() => {
-    if (data) {
-      setItems(data?.data.data);
-    }
-  }, [data]);
+  console.log(data, "members")
+
   const handleAddMemberClick = () => {
     setShowAddMemberPopup(true);
   };
@@ -39,7 +31,7 @@ const Associate = () => {
   const handleCloseAddMemberPopup = () => {
     setShowAddMemberPopup(false);
   };
-  // pdf download
+
   const downloadAsPDF = () => {
     const doc = new jsPDF();
     doc.autoTable({
@@ -67,8 +59,17 @@ const Associate = () => {
 
     doc.save("members.pdf");
   };
+  const [items, setItems] = useState([]);
+  const [isBusy, setIsBusy] = useState();
+  const [selected, setSelected] = useState();
+
   const { Modal: Activate, setShowModal: ShowActivate } = useModal();
   const { Modal: Deactivate, setShowModal: ShowDeactivate } = useModal();
+  useEffect(() => {
+    if (data) {
+      setItems(data?.data.data);
+    }
+  }, [data]);
   const openActivate = (item) => {
     setSelected(item);
     ShowActivate(true);
@@ -83,11 +84,13 @@ const Associate = () => {
   };
   // change account status
   const ChangeAccountStatus = async (status) => {
+    const token  = localStorage.getItem("igbo_token");
+
     try {
       const config = {
         headers: {
           "Content-Type": "Application/json",
-          Authorization: `Bearer ${localStorage.getItem("igbo_token")}`,
+         Authorization: `Bearer ${token}`,
         },
       };
       const res = await axios.get(
@@ -104,7 +107,6 @@ const Associate = () => {
       setIsBusy(false);
     }
   };
-
   // handle search
   const handleSearch = (e) => {
     if (e.target.value === "") {
@@ -116,13 +118,12 @@ const Associate = () => {
       setItems(filtered);
     }
   };
-
   return (
-    <div className="px-4">
-      <div className="fellow_table p-5 bg-white">
+    <div className="px-5">
+      <div className="p-6 bg-white">
         <div className="admin_head">
           <div className="leftt">
-            <h3 className="text-2xl font-semibold">Associate Members</h3>
+            <h3 className="text-2xl font-semibold">Members</h3>
             <svg
               onClick={downloadAsPDF}
               xmlns="http://www.w3.org/2000/svg"
@@ -242,12 +243,13 @@ const Associate = () => {
                             {i + 1}
                           </td>
                           <td className="align-middle fs-500  px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                            <div className="font-semibold  text-blue-900">
+                            <div className="font-semibold text-blue-900">
                               {item.membership_id}
                             </div>
                           </td>
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                            {item.first_name} {item.last_name}
+                            {item.name_of_representative
+                            } 
                           </td>
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                             {item.email}
@@ -297,7 +299,7 @@ const Associate = () => {
                             {dayjs(item.created_at).format("DD-MMM -YYYY")}
                           </td>
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                            <div className="flex gap-x-3">
+                            <div className="flex gap-x-3 cursor-pointer">
                               <BsEyeFill
                                 onClick={() => openDetails(item)}
                                 className="text-xl text-blue-900"
@@ -315,7 +317,7 @@ const Associate = () => {
       </div>
       {showAddMemberPopup && (
         <div className="popup">
-          <AddAssociate onClose={handleCloseAddMemberPopup} />
+          <AddFellow onClose={handleCloseAddMemberPopup} />
         </div>
       )}
       {showDetails && (
@@ -345,4 +347,4 @@ const Associate = () => {
   );
 };
 
-export default Associate;
+export default Members;

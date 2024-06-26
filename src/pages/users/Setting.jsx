@@ -12,6 +12,8 @@ import ChangePassword from "../../users/ChangePassword";
 
 const MembersSetting = () => {
   const { data: user, refetch } = useGetHook("member/profile");
+
+  console.log(user)
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState();
   const [isBusy, setIsBusy] = useState(false);
@@ -19,21 +21,21 @@ const MembersSetting = () => {
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [pbe, setPbe] = useState("")
-  const [nbe, setNbe] = useState("")
-  const [mpb, setMpb] = useState("")
+  const [username, setUserName] = useState("")
+  const [address, setAddress] = useState("")
+  const [representative, setNameOfRepresentative] = useState("")
   const [piwe, setPiwe] = useState("")
   const [rea, setRea] = useState("")
   const { handlePost } = usePostHook();
   const { Modal, setShowModal } = useModal();
   useEffect(() => {
-    setFname(user?.data?.first_name);
+    setFname(user?.data?.name_of_member_organization);
     setLname(user?.data?.last_name);
     setEmail(user?.data?.email);
     setPhone(user?.data?.phone_number);
-    setPbe(user?.data?.place_business_employment)
-    setNbe(user?.data?.nature_business_employment)
-    setMpb(user?.data?.membership_professional_bodies)
+    setUserName(user?.data?.username)
+    setAddress(user?.data?.address)
+    setNameOfRepresentative(user?.data?.name_of_representative)
     setPiwe(user?.data?.previous_insolvency_work_experience)
     setRea(user?.data?.referee_email_address)
   }, [user]);
@@ -63,9 +65,9 @@ const MembersSetting = () => {
     formData.append("last_name", lname);
     formData.append("email", email);
     formData.append("phone_number", phone);
-    formData.append("place_business_employment", pbe)
-    formData.append("nature_business_employment", nbe)
-    formData.append("membership_professional_bodies", mpb)
+    formData.append("place_business_employment", username)
+    formData.append("nature_business_employment", address)
+    formData.append("membership_professional_bodies", representative)
     formData.append("previous_insolvency_work_experience", piwe)
     formData.append("referee_email_address", rea)
     handlePost(
@@ -118,7 +120,7 @@ const MembersSetting = () => {
                     <FaUserShield className="text-2xl text-gray-400" />
                   </div>
                   <div className="w-full">
-                    <p className="text-[14px] text-primary">First Name:</p>
+                    <p className="text-[14px] text-primary">Name of Organization:</p>
                     <input
                       type="text"
                       value={fname}
@@ -127,7 +129,7 @@ const MembersSetting = () => {
                     />
                   </div>
                 </div>
-                <div className="flex items-center gap-x-2">
+                {/* <div className="flex items-center gap-x-2">
                   <div className="w-16 h-16 grid place-content-center shadow-lg">
                     <FaUserShield className="text-2xl text-gray-400" />
                   </div>
@@ -140,7 +142,7 @@ const MembersSetting = () => {
                       className="border-b w-full bg-transparent p-2"
                     />
                   </div>
-                </div>
+                </div> */}
                 <div className="flex items-center gap-x-2">
                   <div className="w-16 h-16 grid place-content-center shadow-lg">
                     <MdMarkEmailRead className="text-2xl text-gray-400" />
@@ -174,11 +176,11 @@ const MembersSetting = () => {
                     <BsHouseAdd className="text-2xl text-gray-400" />
                   </div>
                   <div className="w-full">
-                    <p className="text-[14px] text-primary">Place of Business Employment:</p>
+                    <p className="text-[14px] text-primary">Username:</p>
                     <input
                       type="text"
-                      value={pbe}
-                      onChange={(e) => setPbe(e.target.value)}
+                      value={username}
+                      onChange={(e) => setUserName(e.target.value)}
                       className="border-b w-full bg-transparent p-2"
                     />
                   </div>
@@ -191,8 +193,8 @@ const MembersSetting = () => {
                     <p className="text-[14px] text-primary">Nature of Business Employment:</p>
                     <input
                       type="text"
-                      value={nbe}
-                      onChange={(e) => setNbe(e.target.value)}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
                       className="border-b w-full bg-transparent p-2"
                     />
                   </div>
@@ -202,16 +204,16 @@ const MembersSetting = () => {
                     <FaUsersLine className="text-2xl text-gray-400" />
                   </div>
                   <div className="w-full">
-                    <p className="text-[14px] text-primary">Membership Professional Bodies:</p>
+                    <p className="text-[14px] text-primary">Name of Representative</p>
                     <input
                       type="text"
-                      value={mpb}
-                      onChange={(e) => setMpb(e.target.value)}
+                      value={representative}
+                      onChange={(e) => setNameOfRepresentative(e.target.value)}
                       className="border-b w-full bg-transparent p-2"
                     />
                   </div>
                 </div>
-                <div className="flex items-center gap-x-2">
+                {/* <div className="flex items-center gap-x-2">
                   <div className="w-16 h-16 grid place-content-center shadow-lg">
                     <MdOutlineWorkHistory className="text-2xl text-gray-400" />
                   </div>
@@ -238,7 +240,7 @@ const MembersSetting = () => {
                       className="border-b w-full bg-transparent p-2"
                     />
                   </div>
-                </div>
+                </div> */}
                 {/* <div className="flex items-center gap-x-2">
                   <div className="w-16 h-16 grid place-content-center shadow-lg">
                     <FaUserShield className="text-2xl text-gray-400" />

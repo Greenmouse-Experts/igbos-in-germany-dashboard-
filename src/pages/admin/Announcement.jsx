@@ -51,7 +51,7 @@ const AdminAnnouncement = () => {
     <>
       <div className="p-6 bg-white min-h-screen m-2">
         <div className="flex items-center justify-between px-4">
-          <p className="text-2xl font-semibold">Bripan Announcements</p>
+          <p className="text-2xl font-semibold">Igbos in Germany Announcements</p>
           <button
             className="flex items-center  gap-x-2 p-2 px-4 text-blue-900 font-semibold border border-blue-900 rounded"
             onClick={() => setShowModal(true)}

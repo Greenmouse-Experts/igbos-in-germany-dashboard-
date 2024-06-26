@@ -8,6 +8,8 @@ import Register from "./pages/Register";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import Protect from "./pages/Protect";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Routes>
           <Route path="/" index element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/password-reset" element={<ResetPassword />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           {/* admin routes */}
           <Route path="" element={<Protect />}>

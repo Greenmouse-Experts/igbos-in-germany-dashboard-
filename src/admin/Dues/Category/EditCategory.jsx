@@ -21,7 +21,7 @@ const EditDuesCategory = ({ item, close, refetch }) => {
     const fd = new FormData();
     fd.append("name", name);
     fd.append("bank_id", accNo);
-    fd.append("category_id", item.id )
+    fd.append("category_id", item.id);
     handlePost(`admin/category/update`, fd, `multipart/form-data`, onSuccess);
   };
   return (
@@ -56,7 +56,7 @@ const EditDuesCategory = ({ item, close, refetch }) => {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="w-full py-3 bg-[#291670] font-semibold text-lg rounded text-white"
+          className="w-full py-3 bg-[#015907] font-semibold text-lg rounded text-white"
         >
           {loading ? `Submiting...` : `Submit`}
         </button>

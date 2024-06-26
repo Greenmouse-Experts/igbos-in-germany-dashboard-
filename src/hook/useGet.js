@@ -6,14 +6,20 @@ const useGetHook = (url) => {
   const [loading, setLoading] = useState(true);
   const fetchItem = async () => {
     setLoading(true);
+    const token  = localStorage.getItem("igbo_token");
+    
     try {
       const config = {
         headers: {
           "Content-Type": "Application/json",
-          authorization: `Bearer ${localStorage.getItem("bripan_token")}`,
+          Authorization: `Bearer ${token}`,
         },
       };
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/${url}`, config);
+     
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/${url}`,
+        config
+      );
       const data = res.data;
       setItem(data);
       setLoading(false);

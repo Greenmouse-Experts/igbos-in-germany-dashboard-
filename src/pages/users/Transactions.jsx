@@ -13,7 +13,7 @@ const MembersTransactions = () => {
       <div className="mx-2 p-6 bg-white min-h-[70vh]">
         <div className="">
           <p className="font-semibold text-xl">Transactions</p>
-          <p className='text-[14px]'>Record of your payments on Bripan</p>
+          <p className='text-[14px]'>Record of your payments on Igbos in Germany</p>
         </div>
         <div className='mt-12'>
           <div className='flex gap-x-4'>

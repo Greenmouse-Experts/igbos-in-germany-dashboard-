@@ -1,7 +1,7 @@
 .main_login{
     width: 100%;
     height: 100vh;
-    background: #291670;
+    background: #015907;
     background-position: center;
     display: flex;
     align-items: center;
@@ -12,7 +12,7 @@
 }
 .main_login a{
     font-size: 1rem;
-    color: #291670;
+    color: #015907;
     width: fit-content;
     margin-top: 1rem;
 }
@@ -189,7 +189,7 @@ margin-top: 1.5rem;
 .main_log{
     width: 100%;
     height: auto;
-    background: #291670;
+    background: #015907;
     background-position: center;
     display: flex;
     align-items: center;
@@ -202,7 +202,7 @@ margin-top: 1.5rem;
 
 .already{
 
-    color: #291670;
+    color: #015907;
     font-size: 1.1rem;
 }
 
@@ -221,7 +221,7 @@ margin-top: 1.5rem;
 }
 
 .error a{
-    color: #291670;
+    color: #015907;
     font-size: 1.2rem;
     display: flex;
     align-items: center;
