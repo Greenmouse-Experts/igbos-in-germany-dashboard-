@@ -24,8 +24,8 @@ const MembersSetting = () => {
   const [username, setUserName] = useState("")
   const [address, setAddress] = useState("")
   const [representative, setNameOfRepresentative] = useState("")
-  const [piwe, setPiwe] = useState("")
-  const [rea, setRea] = useState("")
+  // const [piwe, setPiwe] = useState("")
+  // const [rea, setRea] = useState("")
   const { handlePost } = usePostHook();
   const { Modal, setShowModal } = useModal();
   useEffect(() => {
@@ -36,9 +36,13 @@ const MembersSetting = () => {
     setUserName(user?.data?.username)
     setAddress(user?.data?.address)
     setNameOfRepresentative(user?.data?.name_of_representative)
-    setPiwe(user?.data?.previous_insolvency_work_experience)
-    setRea(user?.data?.referee_email_address)
-  }, [user]);
+    localStorage.setItem(
+      "igbo_member_avatar",
+      user?.data?.avatar
+    );
+    // setPiwe(user?.data?.previous_insolvency_work_experience)
+    // setRea(user?.data?.referee_email_address)
+  }, [user, preview, loading]);
   const onSuccess = () => {
     toast.success("Profile updated successfully");
     setLoading(false);
@@ -56,7 +60,11 @@ const MembersSetting = () => {
       formData,
       "multipart/form-data",
       onSuccess
+    
     );
+    if(onSuccess){
+      setLoading(false)
+    }
   };
   const handleUpateProfile = () => {
     setLoading(true)
@@ -65,11 +73,11 @@ const MembersSetting = () => {
     formData.append("last_name", lname);
     formData.append("email", email);
     formData.append("phone_number", phone);
-    formData.append("place_business_employment", username)
-    formData.append("nature_business_employment", address)
-    formData.append("membership_professional_bodies", representative)
-    formData.append("previous_insolvency_work_experience", piwe)
-    formData.append("referee_email_address", rea)
+    formData.append("username", username)
+    formData.append("address", address)
+    formData.append("name_of_representative", representative)
+     formData.append("name_of_member_organization", fname)
+    // formData.append("referee_email_address", rea)
     handlePost(
       `member/profile/update`,
       formData,
@@ -190,7 +198,7 @@ const MembersSetting = () => {
                     <IoBusinessOutline className="text-2xl text-gray-400" />
                   </div>
                   <div className="w-full">
-                    <p className="text-[14px] text-primary">Nature of Business Employment:</p>
+                    <p className="text-[14px] text-primary">Address:</p>
                     <input
                       type="text"
                       value={address}

@@ -13,6 +13,8 @@ import { toast } from "react-toastify";
 
 import AddMembers from "./AddMembers";
 import MemberModal from "./memberModal";
+import EditMember from "./EditMember";
+import CardModal from "./CardModal";
 
 const Members = () => {
   const {
@@ -21,9 +23,8 @@ const Members = () => {
     refetch,
   } = useGetHook("member/retrieve/all/member");
   const [showDetails, setShowDetails] = useState(false);
+  const [showID, setShowID] = useState(false)
   const [showAddMemberPopup, setShowAddMemberPopup] = useState(false);
-
-  console.log(data, "members");
 
   const handleAddMemberClick = () => {
     setShowAddMemberPopup(true);
@@ -32,6 +33,19 @@ const Members = () => {
   const handleCloseAddMemberPopup = () => {
     setShowAddMemberPopup(false);
   };
+  const [showEditMemberPopup, setShowEditMemberPopup] = useState(false);
+  const handleShowCard = () => {
+    setShowID(true);
+  };
+  const handleEditMemberClick = () => {
+    setShowEditMemberPopup(true);
+  };
+
+  const handleCloseEditMemberPopup = () => {
+    setShowEditMemberPopup(false);
+  };
+
+  // console.log(data, "members");
 
   const downloadAsPDF = () => {
     const doc = new jsPDF();
@@ -71,11 +85,10 @@ const Members = () => {
       setItems(data?.data.data);
     }
   }, [data]);
-  const openActivate = (item) => {
+  const openEdit = (item) => {
     setSelected(item);
-    ShowActivate(true);
   };
-  const openDeactivate = (item) => {
+  const openDelete = (item) => {
     setSelected(item);
     ShowDeactivate(true);
   };
@@ -83,19 +96,24 @@ const Members = () => {
     setSelected(item);
     setShowDetails(true);
   };
-  // change account status
-  const ChangeAccountStatus = async (status) => {
-    const token = localStorage.getItem("igbo_token");
+  const openCard = (item) => {
+    setSelected(item);
+    setShowID(true);
+  };
 
+  // change account status
+  const DeleteMember = async () => {
+    const token  = localStorage.getItem("igbo_token");
     try {
       const config = {
         headers: {
           "Content-Type": "Application/json",
-          Authorization: `Bearer ${token}`,
+         Authorization: `Bearer ${token}`,
         },
       };
-      const res = await axios.get(
-        `https://api.ndiigbogermany.org/api/member/view/member?member_id=${selected.id}`,
+      const res = await axios.post(
+        `https://api.ndiigbogermany.org/api/member/delete/member?member_id=${selected.id}`,
+        {},
         config
       );
       const data = res.data;
@@ -196,7 +214,13 @@ const Members = () => {
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
                       >
-                      Image
+                        Member ID
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
+                      >
+                        Image
                       </th>
                       <th
                         scope="col"
@@ -217,12 +241,7 @@ const Members = () => {
                       >
                         Date Joined
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
-                      >
-                       Status
-                      </th>
+
                       <th
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
@@ -238,65 +257,61 @@ const Members = () => {
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                             {i + 1}
                           </td>
+                          <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                            {item.id_number}
+                          </td>
                           <td className="align-middle fs-500  px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                             <div className="font-semibold text-blue-900">
-                              <img src={item.passport} alt="passport" className="rounded-full w-14 h-14" />
+                              <img
+                                src={item.passport}
+                                alt="passport"
+                                className="rounded-full w-14 h-14"
+                              />
                               {item.membership_id}
                             </div>
                           </td>
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                           <p> {item.first_name}</p>
-                           <p>{item.last_name}</p>
+                            <p> {item.first_name}</p>
+                            <p>{item.last_name}</p>
                           </td>
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                             {item.email}
                           </td>
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          {dayjs(item.created_at).format("DD-MMM -YYYY")}
+                            {dayjs(item.created_at).format("DD-MMM -YYYY")}
                           </td>
-                          <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                            {item?.isSubscribed === "0" ? (
-                              <span className="px-2 py-1 text-sm bg-orange-100 font-medium rounded-lg">
-                                Unsubscribed
-                              </span>
-                            ) : (
-                              <span className="px-2 py-1 text-sm bg-green-100 font-medium rounded-lg">
-                                Subscribed
-                              </span>
-                            )}
-                          </td>
+
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                             <div className="flex items-center gap-x-3">
-                              <div
-                                className={`px-2 py-1 rounded font-semibold border ${
-                                  item.status === "Pending" ||
-                                  item.status === "Inactive"
-                                    ? `bg-orange-100`
-                                    : `bg-blue-200`
-                                }`}
+                            <span
+                                className="underline cursor-pointer font-medium text-green-900"
+                                onClick={() => {
+                                  openCard(item);
+                                  handleShowCard();
+                                }}
                               >
-                                {/* {item.status} */}
-                              </div>
-                              {item.status === "Pending" ||
-                              item.status === "Inactive" ? (
-                                <span
-                                  className="underline cursor-pointer font-medium text-blue-900"
-                                  onClick={() => openActivate(item)}
-                                >
-                                  Activate
-                                </span>
-                              ) : (
-                                <span
-                                  className="underline cursor-pointer font-medium text-red-800"
-                                  onClick={() => openDeactivate(item)}
-                                >
-                                  Deactivate
-                                </span>
-                              )}
+                                Generate ID
+                              </span>
+
+                              <span
+                                className="underline cursor-pointer font-medium text-blue-900"
+                                onClick={() => {
+                                  openEdit(item);
+                                  handleEditMemberClick();
+                                }}
+                              >
+                                Edit
+                              </span>
+
+                              <span
+                                className="underline cursor-pointer font-medium text-red-800"
+                                onClick={() => openDelete(item)}
+                              >
+                                Delete
+                              </span>
                             </div>
                           </td>
-                         
-                         
+
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                             <div className="flex gap-x-3">
                               <BsEyeFill
@@ -316,29 +331,28 @@ const Members = () => {
       </div>
       {showAddMemberPopup && (
         <div className="popup">
-          <AddMembers onClose={handleCloseAddMemberPopup} />
+          <AddMembers refetch={refetch} onClose={handleCloseAddMemberPopup} />
         </div>
       )}
-      {showDetails && (
+      {showEditMemberPopup && (
+        <div className="popup">
+          <EditMember item={selected} onClose={handleCloseEditMemberPopup} refetch={refetch}/>
+        </div>
+      )}
+      {showID && (
+        <CardModal item={selected} close={() => setShowID(false)} />
+      )}
+        {showDetails && (
         <MemberModal item={selected} close={() => setShowDetails(false)} />
       )}
-      <Activate title={""} noHead>
-        <ReusableModal
-          title={"Are you sure you want to activate this account?"}
-          cancelTitle="No, cancel"
-          actionTitle="Yes, Activate"
-          closeModal={() => ShowActivate(false)}
-          action={() => ChangeAccountStatus("activate")}
-          isBusy={isBusy}
-        />
-      </Activate>
+      
       <Deactivate title={""} noHead>
         <ReusableModal
-          title={"Are you sure you want to deactivate this account?"}
+          title={"Are you sure you want to delete this account?"}
           cancelTitle="No, cancel"
-          actionTitle="Yes, Deactivate"
-          closeModal={() => ShowActivate(false)}
-          action={() => ChangeAccountStatus("deactivate")}
+          actionTitle="Yes, Delete"
+          closeModal={() => ShowDeactivate(false)}
+          action={() => DeleteMember("deactivate")}
           isBusy={isBusy}
         />
       </Deactivate>

@@ -5,7 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { ThreeDots } from "react-loader-spinner";
 import { CustomAdd } from "../../services/config";
 
-const AddMembers = ({ onClose }) => {
+const AddMembers = ({ onClose, refetch }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [logindata, setLoginData] = useState({
@@ -80,6 +80,7 @@ const AddMembers = ({ onClose }) => {
             console.log(res.data);
             console.log(res.data.errors);
             toast.success("Member Added Successfully");
+            refetch()
             onClose();
           } else {
             console.log(res);

@@ -14,15 +14,17 @@ const Admin = () => {
   const currentYear = new Date().getFullYear();
   const { data: user, refetch } = useGetHook(`admin/dashboard?year=${currentYear}`)
 
+  console.log(user)
+
   const list = [
     {
       head: "Total Members",
-      num: user?.data.totalMembers,
+      num: user?.data.totalPartnerMembers,
       Image: img1,
     },
     {
-      head: "Total Subscribers",
-      num: user?.data.totalSubscribers,
+      head: "Total Partners Members",
+      num: user?.data.totalPartner,
       Image: img2,
     },
     {
@@ -59,7 +61,7 @@ const Admin = () => {
                 <th className="whitespace-nowrap">S/N</th>
                 <th className="whitespace-nowrap">Member Id</th>
                 <th className="whitespace-nowrap">Member Name</th>
-                <th className="whitespace-nowrap">Profession</th>
+                <th className="whitespace-nowrap">Member Type</th>
                 <th className="whitespace-nowrap">Subscription</th>
                 <th className="whitespace-nowrap">Date Registered</th>
               </tr>
@@ -71,7 +73,7 @@ const Admin = () => {
                     <td>{index + 1}</td>
                     <td>{item.membership_id}</td>
                     <td>
-                      {item.first_name} {item.last_name}
+                      {item.name_of_member_organization}
                     </td>
                     <td>{item.account_type}</td>
                     <td>

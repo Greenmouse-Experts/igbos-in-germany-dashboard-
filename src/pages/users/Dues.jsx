@@ -59,7 +59,7 @@ const MembersDues = () => {
       reference: new Date().getTime().toString(),
       email: email,
       amount: Number(item?.amount) * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-      publicKey: `pk_test_77297b93cbc01f078d572fed5e2d58f4f7b518d7`,
+      publicKey: `pk_test_49f890a833251838e552b28276e8e42006444ce7`,
     };
     const initializePayment = usePaystackPayment(config);
     return (
@@ -166,9 +166,9 @@ const MembersDues = () => {
                             <p>{item.category.bank.account_number}</p>
                           </td>
                           <td className="align-middle text-[14px] whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                            <div onClick={() => localStorage.setItem("igbo_id", item.id)}>
+                            {/* <div onClick={() => localStorage.setItem("igbo_id", item.id)}>
                               <PaystackHookButton item={item} />
-                            </div>
+                            </div> */}
                             <p
                               className="mt-4 cursor-pointer flex bg-gray-900 w-44 text-white justify-center py-1 rounded-lg gap-x-2 items-center"
                               onClick={() => openUpload(item.id)}

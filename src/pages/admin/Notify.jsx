@@ -19,7 +19,7 @@ const Notify = ({ datas }) => {
 
   const { handlePost } = usePostHook();
   const onSuccess = () => {
-    toast.success("Announcement added successfully");
+    // toast.success("Announcement added successfully");
   };
   const handleSubmit = async (id) => {
     const endpoint = `admin/read/notification?notification_id=${id}`;

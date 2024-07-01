@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const currentYear = new Date().getFullYear();
   const { data } = useGetHook(`member/dashboard?year=${currentYear}`);
+  
   const navigate = useNavigate()
   return (
     <div className="pl-4">
@@ -86,7 +87,7 @@ const Home = () => {
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
                       >
-                        Work Environ
+                        Occupation
                       </th>
                       <th
                         scope="col"
@@ -94,12 +95,7 @@ const Home = () => {
                       >
                         Date Joined
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
-                      >
-                        Status
-                      </th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -117,7 +113,7 @@ const Home = () => {
                             </div>
                           </td>
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                            <div>{item.place_business_employment}</div>
+                            <div>{item.occupation}</div>
                           </td>
                           <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                             {dayjs(item.created_at).format("DD/MM/YYYY")}

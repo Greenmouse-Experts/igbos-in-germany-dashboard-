@@ -19,11 +19,24 @@ const Notify = ({ datas }) => {
 
   const { handlePost } = usePostHook();
   const onSuccess = () => {
-    toast.success("Announcement added successfully");
+    // toast.success("Announcement added successfully");
   };
+
   const handleSubmit = async (id) => {
-    const endpoint = `admin/read/notification?notification_id=${id}`;
+    const endpoint = `member/read/notification?notification_id=${id}`;
     handlePost(endpoint, `Application/json`, onSuccess);
+  };
+
+  const handleDelete = async (id) => {
+    const endpoint = `member/delete/notification?notification_id=${id}`;
+    handlePost(endpoint, `Application/json`, onSuccess);
+   
+    if(onSuccess){
+      toast.success("Notification deleted successfully");
+      setNotifications((prevNotifications) =>
+        prevNotifications.filter((notification) => notification.id !== id)
+      );
+    }
   };
 
   const [notifications, setNotifications] = useState([]);
@@ -74,7 +87,6 @@ const Notify = ({ datas }) => {
           <div className="notify_body">
             {notifications.map((item, index) => (
               <div
-                onClick={() => handleSubmit(item.id)}
                 key={item.id}
                 className={`notification ${
                   (activeButton === "unread" && item.status === "Unread") ||
@@ -84,7 +96,7 @@ const Notify = ({ datas }) => {
                 }`}
               >
                 <span>
-                  <GoBell />
+                  <GoBell className=" cursor-pointer" onClick={() => handleSubmit(item.id)} />
                 </span>
                 <div>
                   <div>
@@ -93,7 +105,7 @@ const Notify = ({ datas }) => {
                     </h3>
                     <p>{formatTimeAgo(item.created_at)} ago</p>
                   </div>
-                  <BsTrash3Fill />
+                  <BsTrash3Fill size={30} className=" cursor-pointer" onClick={() => handleDelete(item.id)} />
                 </div>
               </div>
             ))}

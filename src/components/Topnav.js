@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { LuMenu } from "react-icons/lu";
 import "../stylesheet/component.css";
-import { BiSearch } from "react-icons/bi";
 import { GoBell } from "react-icons/go";
-import user from "../image/Ellipse 922.png";
+import user from "../image/Ellipse 922.png"; // Default user image
 import useGetHook from "../hook/useGet";
 import { formatDistanceToNow } from "date-fns";
 import { Link } from "react-router-dom";
@@ -13,36 +12,36 @@ export const Topnav = ({ toggleSidebar, data }) => {
     const apiDate = new Date(timestamp);
     return formatDistanceToNow(apiDate);
   };
+
   const [activeDropdown, setActiveDropdown] = useState(false);
-  const { data: datas, isLoading } = useGetHook(
-    "member/get/all/unread/notifications"
-  );
+  const [avatar, setAvatar] = useState(localStorage.getItem("igbo_member_avatar"));
+
+  const { data: datas, isLoading } = useGetHook("member/get/all/unread/notifications");
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === "igbo_member_avatar") {
+        setAvatar(event.newValue);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    setAvatar(localStorage.getItem("igbo_member_avatar"));
+  }, [avatar]);
 
   const name = localStorage.getItem("fName");
   const currentDate = new Date();
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  // const dayNames = [
-  //   "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-  // ];
-
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const day = currentDate.getDate();
   const month = monthNames[currentDate.getMonth()];
   const year = currentDate.getFullYear();
-
   const formattedDate = `${day} ${month} ${year}`;
 
   const popup = () => {
@@ -51,19 +50,13 @@ export const Topnav = ({ toggleSidebar, data }) => {
 
   const bellIconRef = useRef(null);
   const handleClickOutside = (event) => {
-    if (
-      bellIconRef.current &&
-      !bellIconRef.current.contains(event.target) &&
-      !activeDropdown
-    ) {
+    if (bellIconRef.current && !bellIconRef.current.contains(event.target) && !activeDropdown) {
       setActiveDropdown(false);
     }
   };
 
-  // Add click event listener when the component mounts
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
-    // Remove the event listener when the component unmounts
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
@@ -81,17 +74,13 @@ export const Topnav = ({ toggleSidebar, data }) => {
         </div>
       </div>
       <div className="icon_menu">
-        {/* <div className="search">
-          <BiSearch />
-          <input type="text" placeholder="Search" />
-        </div> */}
         <div onClick={popup} ref={bellIconRef} className="bell">
           <GoBell />
           <span>{data}</span>
           {activeDropdown && (
             <div className="bell_drop">
               <div className="add_head">
-                <p>Recent Notification</p>{" "}
+                <p>Recent Notification</p>
               </div>
               {datas?.data.length > 0 ? (
                 datas.data.map((item) => (
@@ -102,17 +91,16 @@ export const Topnav = ({ toggleSidebar, data }) => {
                         <h3>
                           {item.body} <span>{item.title}</span>
                         </h3>
-                        <p>{formatTimeAgo(item.created_at)} ago</p>{" "}
+                        <p>{formatTimeAgo(item.created_at)} ago</p>
                       </div>
                     </div>
                   </div>
                 ))
               ) : (
                 <div>
-                  {" "}
                   <div className="add_head">
-                    <p>Recent Notification</p>{" "}
-                  </div>{" "}
+                    <p>Recent Notification</p>
+                  </div>
                   <p className="no_body">No Notifications</p>
                 </div>
               )}
@@ -120,7 +108,7 @@ export const Topnav = ({ toggleSidebar, data }) => {
             </div>
           )}
         </div>
-        <img src={user} alt="" />
+        <img src={avatar || user} alt="User Avatar" />
       </div>
     </div>
   );

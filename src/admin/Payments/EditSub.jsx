@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 const EditSubscription = ({ item, refetch, close }) => {
   const [loading, setLoading] = useState(false);
   console.log(item.item);
+  const [bank, setBank] = useState("");
   const [amt, setAmt] = useState(Number(item.amount));
   const { handlePost } = usePostHook();
   const onSuccess = () => {
@@ -19,12 +20,22 @@ const EditSubscription = ({ item, refetch, close }) => {
     const fd = new FormData();
     fd.append("subscription_id", item.id);
     fd.append("amount", amt);
+    fd.append("bank", bank);
     handlePost(`admin/subscription`, fd, `multipart/form-data`, onSuccess);
   };
   return (
     <>
       <div>
-        <div>
+        <div className="flex flex-col">
+          <label className="text-lg font-medium">Bank Details</label>
+          <textarea
+            type="text"
+            value={bank}
+            className="border border-gray-400 w-full mt-2 p-2 rounded"
+            onChange={(e) => setBank(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col">
           <label className="text-lg font-medium">Amount</label>
           <input
             type="number"

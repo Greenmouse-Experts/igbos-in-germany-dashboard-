@@ -12,6 +12,7 @@ import { LiaEdit } from "react-icons/lia";
 import EditDues from "../../../admin/Dues/Dues/EditDues";
 import ReusableModal from "../../../components/ReusableModal";
 import AddSubscription from "../../../admin/Subscription/AddSubscription";
+import SetSubscribe from "../../../admin/Payments/SetSubscribe";
 
 const SubList = () => {
   const { data, isLoading, refetch } = useGetHook(`admin/subscription`);
@@ -81,12 +82,12 @@ const SubList = () => {
                       >
                        S/N
                       </th>
-                      <th
+                      {/* <th
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
                       >
                         Description
-                      </th>
+                      </th> */}
                       <th
                         scope="col"
                         className="px-6 lg:px-10 align-middle py-3 fs-500 whitespace-nowrap text-left"
@@ -114,11 +115,11 @@ const SubList = () => {
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           {i + 1}
                         </td>
-                        <td className="align-middle fs-500  px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                        {/* <td className="align-middle fs-500  px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           <div className="w-48">
                           {item.description}
                           </div>
-                        </td>
+                        </td> */}
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           <div>
                             <p>{item.bank}</p>
@@ -129,23 +130,14 @@ const SubList = () => {
                             <p>{formatAsNgnMoney(item.amount)}</p>
                           </div>
                         </td>
-                        <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
+                        {/* <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           {item.start_date}
                         </td>
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           {item.end_date}
-                        </td>
+                        </td> */}
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
-                          <div className="flex gap-x-3">
-                            <LiaEdit
-                              // onClick={() => openEdit(item)}
-                              className="text-xl text-blue-900"
-                            />
-                            <RiDeleteBin5Line
-                              // onClick={() => openDelete(item)}
-                              className="text-lg text-red-600"
-                            />
-                          </div>
+                        <SetSubscribe/>
                         </td>
                       </tr>
                     ))}
@@ -160,18 +152,9 @@ const SubList = () => {
         <AddSubscription close={() => setShowModal(false)} refetch={refetch}/>
       </Modal>
       <Edit title={selected?.name}>
-        <EditDues item={selected} close={() => showEdit(false)} refetch={refetch} />
+      
       </Edit>
-      <Delete title="" noHead>
-        <ReusableModal
-          title="Are you sure you want to delete this due?"
-          cancelTitle="No, cancel"
-          actionTitle="Yes, delete"
-          closeModal={() => showDelete(false)}
-          action={handleDelete}
-          isBusy={isBusy}
-        />
-      </Delete>
+    
     </>
   );
 };

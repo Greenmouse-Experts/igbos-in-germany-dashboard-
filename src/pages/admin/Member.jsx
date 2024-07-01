@@ -317,7 +317,7 @@ const Members = () => {
       </div>
       {showAddMemberPopup && (
         <div className="popup">
-          <AddFellow onClose={handleCloseAddMemberPopup} />
+          <AddFellow onClose={handleCloseAddMemberPopup} refetch={refetch} />
         </div>
       )}
       {showDetails && (

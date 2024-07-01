@@ -26,11 +26,11 @@ const Dashboard = () => {
 
   const { data, isLoading } = useGetHook("member/count/unread/notifications");
   
-  // useEffect(() => {
-  //   if (sub === "0") {
-  //     setSubModal(true);
-  //   }
-  // }, [sub]);
+  useEffect(() => {
+    if (sub === "0") {
+      setSubModal(true);
+    }
+  }, [sub]);
 
   return (
     <div className="layout">

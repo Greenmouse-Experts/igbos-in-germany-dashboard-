@@ -98,9 +98,8 @@ const DuesPayments = () => {
                         </td>
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
                           <div>
-                            <p>
-                              {item.user.first_name} {item.user.last_name}
-                            </p>
+                          <p>{item.user.name_of_member_organization}</p>
+                          <p>{item.user.name_of_representative}</p>
                           </div>
                         </td>
                         <td className="align-middle fs-500 whitespace-nowrap px-6 lg:px-10 py-4 text-left border-b border-[#CECECE]">
